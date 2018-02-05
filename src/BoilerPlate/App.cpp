@@ -1,4 +1,5 @@
 #include "App.hpp"
+#include "Player.h"
 #include "ColorSetter.h"
 #include <iostream>
 #include <algorithm>
@@ -10,6 +11,10 @@
 
 namespace Engine
 {
+	Player *player = new Player();
+	double moveUnit = 5.0;
+
+
 	const float DESIRED_FRAME_RATE = 60.0f;
 	const float DESIRED_FRAME_TIME = 1.0f / DESIRED_FRAME_RATE;
 
@@ -82,6 +87,22 @@ namespace Engine
 	{		
 		switch (keyBoardEvent.keysym.scancode)
 		{
+		case SDL_SCANCODE_W:
+			SDL_Log("UP");
+			player->Move(Vector2(0, moveUnit));
+			break;
+		case SDL_SCANCODE_D:
+			SDL_Log("RIGHT");
+			player->Move(Vector2(moveUnit, 0));
+			break;
+		case SDL_SCANCODE_S:
+			SDL_Log("DOWN");
+			player->Move(Vector2(0, -moveUnit));
+			break;
+		case SDL_SCANCODE_A:
+			SDL_Log("LEFT");
+			player->Move(Vector2(-moveUnit, 0));
+			break;
 		default:			
 			SDL_Log("%S was pressed.", keyBoardEvent.keysym.scancode);
 			break;
@@ -126,14 +147,9 @@ namespace Engine
 
 	void App::Render()
 	{
-		ColorSetter::setBackground(ColorSetter::Navy);
+		ColorSetter::setBackground(ColorSetter::Cyan);
 
-		glBegin(GL_LINE_LOOP);
-		glVertex2f(50.0, 50.0);
-		glVertex2f(50.0, -50.0);
-		glVertex2f(-50.0, -50.0);
-		glVertex2f(-50.0, 50.0);
-		glEnd();
+		player->Render();
 
 		SDL_GL_SwapWindow(m_mainWindow);
 	}

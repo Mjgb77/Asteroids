@@ -254,8 +254,6 @@ paket-files/
 .idea/
 *.sln.iml
 
-!Externals/
-
 #Linux ignores
 **.o
 BoilerPlate/main

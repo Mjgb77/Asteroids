@@ -39,8 +39,6 @@ public:
 		return min(max(startValue, x), endValue);
 	}
 
-	//esa es la de clamp
-
 	template <typename T>
 	static T interpolate(T startValue, T endValue, double fraction) {
 		return startValue + round((endValue - startValue)*fraction);
