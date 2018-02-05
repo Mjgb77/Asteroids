@@ -33,9 +33,7 @@ struct Vector2 {
 
 	friend Vector2 operator* (double, const Vector2&);
 	friend Vector2 operator* (const Vector2&, double);
-
 };
-
 
 
 #endif /* VECTOR2_H_ */

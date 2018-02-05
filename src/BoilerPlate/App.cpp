@@ -147,10 +147,8 @@ namespace Engine
 
 	void App::Render()
 	{
-		ColorSetter::setBackground(ColorSetter::Cyan);
-
+		ColorSetter::setBackground(ColorSetter::Navy);
 		player->Render();
-
 		SDL_GL_SwapWindow(m_mainWindow);
 	}
 
