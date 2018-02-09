@@ -3,11 +3,13 @@
 #include "ColorSetter.h"
 #include <iostream>
 #include <algorithm>
+#include <string>
 
 // OpenGL includes
 #include <GL/glew.h>
 #include <SDL2/SDL_opengl.h>
 
+using namespace std;
 
 namespace Engine
 {
@@ -26,6 +28,7 @@ namespace Engine
 		, m_timer(new TimeManager)
 		, m_mainWindow(nullptr)
 	{
+		player->updateSize(width, height);
 		m_state = GameState::UNINITIALIZED;
 		m_lastFrameTime = m_timer->GetElapsedTimeInSeconds();
 	}
@@ -84,12 +87,13 @@ namespace Engine
 	}
 
 	void App::OnKeyDown(SDL_KeyboardEvent keyBoardEvent)
-	{		
+	{
 		switch (keyBoardEvent.keysym.scancode)
 		{
 		case SDL_SCANCODE_W:
 			SDL_Log("UP");
 			player->Move(Vector2(0, moveUnit));
+			player->startThrust();
 			break;
 		case SDL_SCANCODE_D:
 			SDL_Log("RIGHT");
@@ -103,7 +107,7 @@ namespace Engine
 			SDL_Log("LEFT");
 			player->Move(Vector2(-moveUnit, 0));
 			break;
-		default:			
+		default:
 			SDL_Log("%S was pressed.", keyBoardEvent.keysym.scancode);
 			break;
 		}
@@ -115,6 +119,10 @@ namespace Engine
 		{
 		case SDL_SCANCODE_ESCAPE:
 			OnExit();
+			break;
+
+		case SDL_SCANCODE_W:
+			player->stopThrust();
 			break;
 		default:
 			//DO NOTHING
@@ -247,7 +255,8 @@ namespace Engine
 		//
 		m_width = width;
 		m_height = height;
-
+		
+		player->updateSize(width, height);
 		SetupViewport();
 	}
 
