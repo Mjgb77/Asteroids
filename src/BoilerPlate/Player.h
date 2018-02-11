@@ -10,14 +10,19 @@ class Player {
 	Vector2 * position;
 	bool isThrusting;
 	int width, height;
+
 public:
 	Player();
 	//void Update();
 	void Move(Vector2 &);
-	void Render();
-	void startThrust();
-	void stopThrust();
-	void updateSize(int, int);
+	void MoveForward ();
+	void RotateLeft();
+	void RotateRight();
+	void Render ();
+	void startThrust ();
+	void stopThrust ();
+	void warpPos ();
+	void updateSize (int, int);
 };
 
 #endif // !PLAYER_H_
