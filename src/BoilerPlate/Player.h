@@ -7,6 +7,7 @@
 using namespace std;
 
 class Player {
+
 	Vector2 * position;
 	bool isThrusting;
 	int width, height;
@@ -18,11 +19,12 @@ public:
 	void MoveForward ();
 	void RotateLeft();
 	void RotateRight();
+	
+	void StartThrust ();
+	void StopThrust ();
+	void UpdateSize (int, int);
+	
 	void Render ();
-	void startThrust ();
-	void stopThrust ();
-	void warpPos ();
-	void updateSize (int, int);
 };
 
 #endif // !PLAYER_H_

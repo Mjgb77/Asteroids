@@ -1,20 +1,15 @@
 #include "App.hpp"
-#include "Player.h"
 #include "ColorSetter.h"
 #include <iostream>
 #include <algorithm>
-#include <string>
 
 // OpenGL includes
 #include <GL/glew.h>
 #include <SDL2/SDL_opengl.h>
 
-using namespace std;
-
 namespace Engine
 {
-	Player *player = new Player();
-	double moveUnit = 5.0;
+	double unitMove = 5.0;
 
 
 	const float DESIRED_FRAME_RATE = 60.0f;
@@ -28,7 +23,8 @@ namespace Engine
 		, m_timer(new TimeManager)
 		, m_mainWindow(nullptr)
 	{
-		player->updateSize(width, height);
+		player = new Player();
+		player->UpdateSize(width, height);
 		m_state = GameState::UNINITIALIZED;
 		m_lastFrameTime = m_timer->GetElapsedTimeInSeconds();
 	}
@@ -36,6 +32,7 @@ namespace Engine
 	App::~App()
 	{
 		CleanupSDL();
+		if (player) delete player;
 	}
 
 	void App::Execute()
@@ -92,20 +89,20 @@ namespace Engine
 		{
 		case SDL_SCANCODE_W:
 			SDL_Log("UP");
-			player->Move(Vector2(0, moveUnit));
-			player->startThrust();
+			player->Move(Vector2(0, unitMove));
+			player->StartThrust();
 			break;
 		case SDL_SCANCODE_D:
 			SDL_Log("RIGHT");
-			player->Move(Vector2(moveUnit, 0));
+			player->Move(Vector2(unitMove, 0));
 			break;
 		case SDL_SCANCODE_S:
 			SDL_Log("DOWN");
-			player->Move(Vector2(0, -moveUnit));
+			player->Move(Vector2(0, -unitMove));
 			break;
 		case SDL_SCANCODE_A:
 			SDL_Log("LEFT");
-			player->Move(Vector2(-moveUnit, 0));
+			player->Move(Vector2(-unitMove, 0));
 			break;
 		default:
 			SDL_Log("%S was pressed.", keyBoardEvent.keysym.scancode);
@@ -122,7 +119,7 @@ namespace Engine
 			break;
 
 		case SDL_SCANCODE_W:
-			player->stopThrust();
+			player->StopThrust();
 			break;
 		default:
 			//DO NOTHING
@@ -256,7 +253,7 @@ namespace Engine
 		m_width = width;
 		m_height = height;
 		
-		player->updateSize(width, height);
+		player->UpdateSize(width, height);
 		SetupViewport();
 	}
 
