@@ -67,7 +67,7 @@ namespace Engine
 		SDL_GLContext						m_context;
 		GameState::State					m_state;
 		Engine::TimeManager*				m_timer;
-		Player*								player;
+		Player*								m_player;
 	};
 }
 #endif /* GAME_HPP */
