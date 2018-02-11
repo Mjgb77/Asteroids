@@ -31,6 +31,9 @@ void Player::RotateLeft() {
 
 }
 
+void Player::RotateRight() {
+
+}
 
 void Player::updateSize(int newWidth, int newHeight) {
 	width = newWidth;
