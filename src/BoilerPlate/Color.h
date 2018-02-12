@@ -1,14 +1,13 @@
 #ifndef COLOR_H_
 #define COLOR_H_
 
-class Color
+struct Color
 {
 
-public:
 	//Values should be in the range [0.0, 1.0], otherwise they will be clamped. By default they are 0.0
-	double red, green, blue, alpha;
+	float red, green, blue, alpha;
 	
-	Color(double red = 0.0, double green = 0.0, double blue = 0.0, double alpha = 0.0);
+	Color(float red = 0.0f, float green = 0.0f, float blue = 0.0f, float alpha = 0.0f);
 	
 };
 

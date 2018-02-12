@@ -9,7 +9,6 @@
 
 // 
 #include "App.hpp"
-#include "MathUtilities.h"
 
 const int WIDTH = 1136;
 const int HEIGHT = 640;
@@ -23,18 +22,6 @@ int main(int argc, char* argv[])
 	assert(_CrtCheckMemory());
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
-
-	//TEST MATHUTILITES CLASS
-
-	cout << "Is 64 power of two?:		" << MathUtilities::isPowerOfTwo(16) << endl;
-	cout << "Is 20 power of two?:		" << MathUtilities::isPowerOfTwo(20) << endl;
-	cout << "Max of {-9.3, 4.0, 7.1, -5.2}:	" << MathUtilities::getMax(-9.3, 4.0, 7.1, -5.2) << endl;
-	cout << "Interpolate 3.4994 to [5, 15]:	" << MathUtilities::interpolate(5, 15, 0.3494) << endl;
-	cout << "Nearest even int to 2.7:	" << MathUtilities::nearestEven(2.7) << endl;
-
-	system("PAUSE");
-	
-	//END TEST
 
 	// Create Game Object
 	//

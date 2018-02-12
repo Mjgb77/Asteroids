@@ -3,33 +3,33 @@
 #include <cmath>
 using namespace std;
 
-const double PI = acos(-1);
+const float PI = acos(-1);
 
-int MathUtilities::nearestInt(double x) {
+int MathUtilities::nearestInt(float x) {
 	return round(x);
 }
 
-int MathUtilities::nearestEven(double x) {
+int MathUtilities::nearestEven(float x) {
 	int xLow = floor(x), xUp = ceil(x);
 	if (xLow == xUp) return xUp + 1;
 	return xLow & 1 ? xUp : xLow;
 }
 
-double MathUtilities::toDeg(double rad) {
+float MathUtilities::toDeg(float rad) {
 	return rad * 180 / PI;
 }
 
-double MathUtilities::toRad(double deg) {
+float MathUtilities::toRad(float deg) {
 	return deg * PI / 180;
 }
 
-double MathUtilities::calculateAngularDistanceInDeg(double startAngle, double endAngle) {
-	double dis = endAngle - startAngle;
+float MathUtilities::calculateAngularDistanceInDeg(float startAngle, float endAngle) {
+	float dis = endAngle - startAngle;
 	return dis < 0 ? dis + 360 : dis;
 }
 
-double MathUtilities::calculateAngularDistanceInRad(double startAngle, double endAngle) {
-	double dis = endAngle - startAngle;
+float MathUtilities::calculateAngularDistanceInRad(float startAngle, float endAngle) {
+	float dis = endAngle - startAngle;
 	return dis < 0 ? dis + 2 * PI : dis;
 }
 
