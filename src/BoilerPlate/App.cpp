@@ -1,5 +1,4 @@
 #include "App.hpp"
-#include "Player.h"
 #include "ColorSetter.h"
 #include <iostream>
 #include <algorithm>
@@ -8,11 +7,9 @@
 #include <GL/glew.h>
 #include <SDL2/SDL_opengl.h>
 
-
 namespace Engine
 {
-	Player *player = new Player();
-	double moveUnit = 5.0;
+	float unitMove = 5.0f;
 
 
 	const float DESIRED_FRAME_RATE = 60.0f;
@@ -26,6 +23,8 @@ namespace Engine
 		, m_timer(new TimeManager)
 		, m_mainWindow(nullptr)
 	{
+		m_player = new Player();
+		m_player->UpdateSize(width, height);
 		m_state = GameState::UNINITIALIZED;
 		m_lastFrameTime = m_timer->GetElapsedTimeInSeconds();
 	}
@@ -33,6 +32,7 @@ namespace Engine
 	App::~App()
 	{
 		CleanupSDL();
+		if (m_player) delete m_player;
 	}
 
 	void App::Execute()
@@ -84,26 +84,27 @@ namespace Engine
 	}
 
 	void App::OnKeyDown(SDL_KeyboardEvent keyBoardEvent)
-	{		
+	{
 		switch (keyBoardEvent.keysym.scancode)
 		{
 		case SDL_SCANCODE_W:
 			SDL_Log("UP");
-			player->Move(Vector2(0, moveUnit));
+			m_player->Move(Vector2(0.0f, unitMove));
+			m_player->StartThrust();
 			break;
 		case SDL_SCANCODE_D:
 			SDL_Log("RIGHT");
-			player->Move(Vector2(moveUnit, 0));
+			m_player->Move(Vector2(unitMove, 0.0f));
 			break;
 		case SDL_SCANCODE_S:
 			SDL_Log("DOWN");
-			player->Move(Vector2(0, -moveUnit));
+			m_player->Move(Vector2(0, -unitMove));
 			break;
 		case SDL_SCANCODE_A:
 			SDL_Log("LEFT");
-			player->Move(Vector2(-moveUnit, 0));
+			m_player->Move(Vector2(-unitMove, 0.0f));
 			break;
-		default:			
+		default:
 			SDL_Log("%S was pressed.", keyBoardEvent.keysym.scancode);
 			break;
 		}
@@ -115,6 +116,10 @@ namespace Engine
 		{
 		case SDL_SCANCODE_ESCAPE:
 			OnExit();
+			break;
+
+		case SDL_SCANCODE_W:
+			m_player->StopThrust();
 			break;
 		default:
 			//DO NOTHING
@@ -148,7 +153,7 @@ namespace Engine
 	void App::Render()
 	{
 		ColorSetter::setBackground(ColorSetter::Navy);
-		player->Render();
+		m_player->Render();
 		SDL_GL_SwapWindow(m_mainWindow);
 	}
 
@@ -247,7 +252,8 @@ namespace Engine
 		//
 		m_width = width;
 		m_height = height;
-
+		
+		m_player->UpdateSize(width, height);
 		SetupViewport();
 	}
 

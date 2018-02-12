@@ -2,15 +2,29 @@
 #define PLAYER_H_
 
 #include "Vector2.h"
+#include <vector>
 
-class Player
-{
+using namespace std;
+
+class Player {
+
 	Vector2 * position;
+	bool isThrusting;
+	int width, height;
+
 public:
 	Player();
 	//void Update();
 	void Move(Vector2 &);
-	void Render();
+	void MoveForward ();
+	void RotateLeft();
+	void RotateRight();
+	
+	void StartThrust ();
+	void StopThrust ();
+	void UpdateSize (int, int);
+	
+	void Render ();
 };
 
 #endif // !PLAYER_H_

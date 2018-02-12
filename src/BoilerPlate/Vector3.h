@@ -5,20 +5,20 @@ struct Vector2;
 
 struct Vector3 {
 
-	double x, y, z;
-	double length;
+	float x, y, z;
+	float length;
 
 	Vector3();
-	Vector3(double);
+	Vector3(float);
 	Vector3(const Vector2&);
-	Vector3(double, double, double);
+	Vector3(float, float, float);
 
 	static Vector3 Origin;
 
 
 	void Normalize();
-	double SquaredLength() const;
-	double Length() const;
+	float SquaredLength() const;
+	float Length() const;
 
 	Vector3 operator+ (const Vector3&) const;
 	Vector3 operator- (const Vector3&) const;
@@ -34,8 +34,8 @@ struct Vector3 {
 	bool operator== (const Vector3&) const;
 	bool operator!= (const Vector3&) const;
 
-	friend Vector3 operator* (double, const Vector3&);
-	friend Vector3 operator* (const Vector3&, double);
+	friend Vector3 operator* (float, const Vector3&);
+	friend Vector3 operator* (const Vector3&, float);
 
 };
 

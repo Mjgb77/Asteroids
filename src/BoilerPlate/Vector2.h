@@ -3,19 +3,19 @@
 
 struct Vector2 {
 
-	double x, y;
-	double length;
+	float x, y;
+	float length;
 
 	Vector2();
-	Vector2(double);
-	Vector2(double, double);
+	Vector2(float);
+	Vector2(float, float);
 
 	static Vector2 Origin;
 
 
 	void Normalize();
-	double SquaredLength() const;
-	double Length() const;
+	float SquaredLength() const;
+	float Length() const;
 
 	Vector2 operator+ (const Vector2&) const;
 	Vector2 operator- (const Vector2&) const;
@@ -31,8 +31,8 @@ struct Vector2 {
 	bool operator== (const Vector2&) const;
 	bool operator!= (const Vector2&) const;
 
-	friend Vector2 operator* (double, const Vector2&);
-	friend Vector2 operator* (const Vector2&, double);
+	friend Vector2 operator* (float, const Vector2&);
+	friend Vector2 operator* (const Vector2&, float);
 };
 
 
