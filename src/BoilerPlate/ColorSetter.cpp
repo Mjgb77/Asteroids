@@ -2,11 +2,11 @@
 #include <GL/glew.h>
 #include <SDL2/SDL_opengl.h>
 
-const Color ColorSetter::Amber = Color(1.0, 0.55, 0.0, 1.0);
-const Color ColorSetter::Black = Color(0.0, 0.0, 0.0, 1.0);
-const Color ColorSetter::Cyan = Color(0.1, 0.7, 0.9, 1.0);
-const Color ColorSetter::Navy = Color(0.0, 0.0, 0.5, 1.0);
-const Color ColorSetter::Red = Color(1.0, 0.0, 0.0, 1.0);
+const Color ColorSetter::Amber = Color(1.0f, 0.55f, 0.0f, 1.0f);
+const Color ColorSetter::Black = Color(0.0f, 0.0f, 0.0f, 1.0f);
+const Color ColorSetter::Cyan = Color(0.1f, 0.7f, 0.9f, 1.0f);
+const Color ColorSetter::Navy = Color(0.0f, 0.0f, 0.5f, 1.0f);
+const Color ColorSetter::Red = Color(1.0f, 0.0f, 0.0f, 1.0f);
 
 ColorSetter::ColorSetter(){
 }

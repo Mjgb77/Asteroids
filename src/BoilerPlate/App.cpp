@@ -9,7 +9,7 @@
 
 namespace Engine
 {
-	double unitMove = 5.0;
+	float unitMove = 5.0f;
 
 
 	const float DESIRED_FRAME_RATE = 60.0f;
@@ -89,12 +89,12 @@ namespace Engine
 		{
 		case SDL_SCANCODE_W:
 			SDL_Log("UP");
-			m_player->Move(Vector2(0, unitMove));
+			m_player->Move(Vector2(0.0f, unitMove));
 			m_player->StartThrust();
 			break;
 		case SDL_SCANCODE_D:
 			SDL_Log("RIGHT");
-			m_player->Move(Vector2(unitMove, 0));
+			m_player->Move(Vector2(unitMove, 0.0f));
 			break;
 		case SDL_SCANCODE_S:
 			SDL_Log("DOWN");
@@ -102,7 +102,7 @@ namespace Engine
 			break;
 		case SDL_SCANCODE_A:
 			SDL_Log("LEFT");
-			m_player->Move(Vector2(-unitMove, 0));
+			m_player->Move(Vector2(-unitMove, 0.0f));
 			break;
 		default:
 			SDL_Log("%S was pressed.", keyBoardEvent.keysym.scancode);

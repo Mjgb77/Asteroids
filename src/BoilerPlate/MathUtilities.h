@@ -7,14 +7,14 @@ using namespace std;
 class MathUtilities {
 
 public:
-	static int nearestInt (double x);
-	static int nearestEven (double x); //Return the nearest even integer, if there is a tie return the greatest
+	static int nearestInt (float x);
+	static int nearestEven (float x); //Return the nearest even integer, if there is a tie return the greatest
 
-	static double toDeg (double rad);
-	static double toRad (double deg);
+	static float toDeg (float rad);
+	static float toRad (float deg);
 
-	static double calculateAngularDistanceInDeg (double startAngle, double endAngle);
-	static double calculateAngularDistanceInRad (double startAngle, double endAngle);
+	static float calculateAngularDistanceInDeg (float startAngle, float endAngle);
+	static float calculateAngularDistanceInRad (float startAngle, float endAngle);
 
 	static bool isPowerOfTwo (int x);
 
@@ -40,7 +40,7 @@ public:
 	}
 
 	template <typename T>
-	static T interpolate(T startValue, T endValue, double fraction) {
+	static T interpolate(T startValue, T endValue, float fraction) {
 		return startValue + round((endValue - startValue)*fraction);
 	}
 };

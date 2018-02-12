@@ -8,43 +8,41 @@ using namespace std;
 
 Vector4 Vector4::Origin = Vector4();
 
-Vector4::Vector4() : x(0.0), y(0.0), z(0.0), w(0.0), length(0.0) { }
+Vector4::Vector4() : x(0.0f), y(0.0f), z(0.0f), w(0.0f), length(0.0f) { }
 
-Vector4::Vector4(double _uniform) : x(_uniform), y(_uniform), z(_uniform), w(_uniform) {
+Vector4::Vector4(float _uniform) : x(_uniform), y(_uniform), z(_uniform), w(_uniform) {
 	length = Length();
 }
 
-Vector4::Vector4(const Vector2& V) : x(V.x), y(V.y) {
-	z = w = 0.0;
+Vector4::Vector4(const Vector2& V) : x(V.x), y(V.y), z (0.0f), w (0.0f) {
 	length = Length();
 }
 
-Vector4::Vector4(const Vector3& V) : x(V.x), y(V.y), z(V.z) {
-	w = 0.0;
+Vector4::Vector4(const Vector3& V) : x(V.x), y(V.y), z(V.z), w(0.0f) {
 	length = Length();
 }
 
-Vector4::Vector4(double x, double y, double z, double w) : x(x), y(y), z(z), w(w) {
+Vector4::Vector4(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {
 	length = Length();
 }
 
 void Vector4::Normalize() {
 	length = Length();
 
-	double invLen = 1.0 / length;
+	float invLen = 1.0f / length;
 	x *= invLen;
 	y *= invLen;
 	z *= invLen;
 	w *= invLen;
-	length = 1.0;
+	length = 1.0f;
 
 }
 
-double Vector4::SquaredLength() const {
+float Vector4::SquaredLength() const {
 	return x * x + y * y + z * z + w * w;
 }
 
-double Vector4::Length() const {
+float Vector4::Length() const {
 	return sqrt(SquaredLength());
 }
 
@@ -124,10 +122,10 @@ bool Vector4::operator!=(const Vector4& rhs) const {
 	return !(*this == rhs);
 }
 
-Vector4 operator*(double scale, const Vector4& rhs) {
+Vector4 operator*(float scale, const Vector4& rhs) {
 	return Vector4(scale * rhs.x, scale * rhs.y, scale * rhs.z,  scale * rhs.w);
 }
 
-Vector4 operator*(const Vector4& lhs, double scale) {
+Vector4 operator*(const Vector4& lhs, float scale) {
 	return Vector4(scale * lhs.x, scale * lhs.y, scale * lhs.z, scale * lhs.w);
 }

@@ -5,30 +5,30 @@ using namespace std;
 
 Vector2 Vector2::Origin = Vector2();
 
-Vector2::Vector2(): x(0.0), y(0.0), length(0.0) { }
+Vector2::Vector2(): x(0.0f), y(0.0f), length(0.0f) { }
 
-Vector2::Vector2(double x, double y): x(x), y(y) {
+Vector2::Vector2(float x, float y): x(x), y(y) {
 	length = Length();
 }
 
-Vector2::Vector2(double _uniform): x(_uniform), y(_uniform) {
+Vector2::Vector2(float _uniform): x(_uniform), y(_uniform) {
 	length = Length();
 }
 
 void Vector2::Normalize() {
 	length = Length();
-	double invLen = 1.0 / length;
+	float invLen = 1.0f / length;
 	x *= invLen;
 	y *= invLen;
-	length = 1.0;
+	length = 1.0f;
 
 }
 
-double Vector2::SquaredLength() const {
+float Vector2::SquaredLength() const {
 	return x * x + y * y;
 }
 
-double Vector2::Length() const {
+float Vector2::Length() const {
 	return sqrt(SquaredLength());
 }
 
@@ -98,10 +98,10 @@ bool Vector2::operator!=(const Vector2& rhs) const {
 	return !(*this == rhs);
 }
 
-Vector2 operator*(double scale, const Vector2& rhs) {
+Vector2 operator*(float scale, const Vector2& rhs) {
 	return Vector2(scale * rhs.x, scale * rhs.y);
 }
 
-Vector2 operator*(const Vector2& lhs, double scale) {
+Vector2 operator*(const Vector2& lhs, float scale) {
 	return Vector2(scale * lhs.x, scale * lhs.y);
 }
