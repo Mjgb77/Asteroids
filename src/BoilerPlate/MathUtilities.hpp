@@ -1,14 +1,18 @@
-#ifndef MATHUTILITIES_H_
-#define MATHUTILITIES_H_
+#ifndef MATHUTILITIES_HPP_
+#define MATHUTILITIES_HPP_
 
 #include <algorithm>
-using namespace std;
 
 class MathUtilities {
 
 public:
+	static const float PI;
+
 	static int nearestInt (float x);
 	static int nearestEven (float x); //Return the nearest even integer, if there is a tie return the greatest
+
+	static int randInt (int);
+	static float randF();
 
 	static float toDeg (float rad);
 	static float toRad (float deg);
@@ -23,7 +27,7 @@ public:
 
 	template<typename T, typename... Args>
 	static T getMax(T x, Args... args) {
-		return max(x, getMax(args...));
+		return std::max(x, getMax(args...));
 	}
 
 	template <typename T>
@@ -31,17 +35,17 @@ public:
 
 	template<typename T, typename... Args>
 	static T getMin(T x, Args ... args) {
-		return min(x, getMin(args...));
+		return std::min(x, getMin(args...));
 	}
 
 	template <typename T>
 	static T clamp(T x, T startValue, T endValue) {
-		return min(max(startValue, x), endValue);
+		return std::min(std::max(startValue, x), endValue);
 	}
 
 	template <typename T>
 	static T interpolate(T startValue, T endValue, float fraction) {
-		return startValue + round((endValue - startValue)*fraction);
+		return startValue + (endValue - startValue)*fraction;
 	}
 };
 

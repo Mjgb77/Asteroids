@@ -1,5 +1,5 @@
-#ifndef VECTOR4_H_
-#define VECTOR4_H_
+#ifndef VECTOR4_HPP_
+#define VECTOR4_HPP_
 
 struct Vector2;
 struct Vector3;
@@ -41,4 +41,4 @@ struct Vector4 {
 
 };
 
-#endif /* VECTOR4_H_ */
+#endif /* VECTOR4_HPP_ */

@@ -1,5 +1,5 @@
 #include "App.hpp"
-#include "ColorSetter.h"
+#include "ColorSetter.hpp"
 #include <iostream>
 #include <algorithm>
 
@@ -23,8 +23,9 @@ namespace Engine
 		, m_timer(new TimeManager)
 		, m_mainWindow(nullptr)
 	{
-		m_player = new Player();
-		m_player->UpdateSize(width, height);
+		m_player = new Player(m_width,m_height);
+		m_asteroid = new Asteroid(BIG, m_width, m_height);
+
 		m_state = GameState::UNINITIALIZED;
 		m_lastFrameTime = m_timer->GetElapsedTimeInSeconds();
 	}
@@ -87,22 +88,18 @@ namespace Engine
 	{
 		switch (keyBoardEvent.keysym.scancode)
 		{
-		case SDL_SCANCODE_W:
+		case SDL_SCANCODE_UP:
 			SDL_Log("UP");
-			m_player->Move(Vector2(0.0f, unitMove));
+			m_player->MoveForward();
 			m_player->StartThrust();
 			break;
-		case SDL_SCANCODE_D:
+		case SDL_SCANCODE_RIGHT:
 			SDL_Log("RIGHT");
-			m_player->Move(Vector2(unitMove, 0.0f));
+			m_player->RotateRight();
 			break;
-		case SDL_SCANCODE_S:
-			SDL_Log("DOWN");
-			m_player->Move(Vector2(0, -unitMove));
-			break;
-		case SDL_SCANCODE_A:
+		case SDL_SCANCODE_LEFT:
 			SDL_Log("LEFT");
-			m_player->Move(Vector2(-unitMove, 0.0f));
+			m_player->RotateLeft();
 			break;
 		default:
 			SDL_Log("%S was pressed.", keyBoardEvent.keysym.scancode);
@@ -118,7 +115,7 @@ namespace Engine
 			OnExit();
 			break;
 
-		case SDL_SCANCODE_W:
+		case SDL_SCANCODE_UP:
 			m_player->StopThrust();
 			break;
 		default:
@@ -148,12 +145,16 @@ namespace Engine
 		m_lastFrameTime = m_timer->GetElapsedTimeInSeconds();
 
 		m_nUpdates++;
+
+		m_asteroid->Update();
 	}
 
 	void App::Render()
 	{
-		ColorSetter::setBackground(ColorSetter::Navy);
+		ColorSetter::setBackground(ColorSetter::DarkNight);
 		m_player->Render();
+		m_asteroid->Render();
+		
 		SDL_GL_SwapWindow(m_mainWindow);
 	}
 
@@ -170,9 +171,9 @@ namespace Engine
 		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 
-		Uint32 flags =  SDL_WINDOW_OPENGL     | 
-						SDL_WINDOW_SHOWN      | 
-						SDL_WINDOW_RESIZABLE;
+		Uint32 flags = SDL_WINDOW_OPENGL |
+			SDL_WINDOW_SHOWN |
+			SDL_WINDOW_RESIZABLE;
 
 		m_mainWindow = SDL_CreateWindow(
 			m_title.c_str(),
@@ -252,8 +253,10 @@ namespace Engine
 		//
 		m_width = width;
 		m_height = height;
-		
+
 		m_player->UpdateSize(width, height);
+		m_asteroid->UpdateSize(width, height);
+
 		SetupViewport();
 	}
 

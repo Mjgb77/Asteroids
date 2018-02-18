@@ -1,9 +1,17 @@
-#include "MathUtilities.h"
+#include "MathUtilities.hpp"
 #include <intrin.h>
 #include <cmath>
-using namespace std;
+#include <ctime>
 
-const float PI = acos(-1);
+const float MathUtilities::PI = acosf(-1);
+
+void randSeed() {
+	static bool seeded = false;
+	if (!seeded) {
+		srand(time(NULL));
+		seeded = true;
+	}
+}
 
 int MathUtilities::nearestInt(float x) {
 	return round(x);
@@ -13,6 +21,16 @@ int MathUtilities::nearestEven(float x) {
 	int xLow = floor(x), xUp = ceil(x);
 	if (xLow == xUp) return xUp + 1;
 	return xLow & 1 ? xUp : xLow;
+}
+
+int MathUtilities::randInt(int max) {
+	randSeed();
+	return rand() % max;
+}
+
+float MathUtilities::randF() {
+	randSeed();
+	return float(rand()) / RAND_MAX;
 }
 
 float MathUtilities::toDeg(float rad) {

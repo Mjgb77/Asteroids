@@ -1,7 +1,7 @@
-#ifndef COLORSETTER_H_
-#define COLORSETTER_H_
+#ifndef COLORSETTER_HPP_
+#define COLORSETTER_HPP_
 
-#include "Color.h"
+#include "Color.hpp"
 
 class ColorSetter
 {
@@ -11,11 +11,11 @@ public:
 	static const Color Amber;
 	static const Color Black;
 	static const Color Cyan;
-	static const Color Navy;
+	static const Color DarkNight;
 	static const Color Red;
 
 	static void setBackground(Color color);
 };
 
-#endif /* COLORSETTER_H_ */
+#endif /* COLORSETTER_HPP_ */
 

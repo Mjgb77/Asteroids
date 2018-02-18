@@ -1,5 +1,5 @@
-#include "Color.h"
-#include "MathUtilities.h"
+#include "Color.hpp"
+#include "MathUtilities.hpp"
 
 Color::Color (float red, float green, float blue, float alpha) {
 	this->red = MathUtilities::clamp(red, 0.0f, 1.0f);
