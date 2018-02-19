@@ -1,7 +1,5 @@
-#include "Vector2.h"
+#include "Vector2.hpp"
 #include <cmath>
-
-using namespace std;
 
 Vector2 Vector2::Origin = Vector2();
 

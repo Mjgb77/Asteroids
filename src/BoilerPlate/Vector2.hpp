@@ -1,5 +1,5 @@
-#ifndef VECTOR2_H_
-#define VECTOR2_H_
+#ifndef VECTOR2_HPP_
+#define VECTOR2_HPP_
 
 struct Vector2 {
 
@@ -36,4 +36,4 @@ struct Vector2 {
 };
 
 
-#endif /* VECTOR2_H_ */
+#endif /* VECTOR2_HPP_ */
