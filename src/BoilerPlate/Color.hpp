@@ -1,5 +1,5 @@
-#ifndef COLOR_H_
-#define COLOR_H_
+#ifndef COLOR_HPP_
+#define COLOR_HPP_
 
 struct Color
 {
@@ -11,4 +11,4 @@ struct Color
 	
 };
 
-#endif /* COLOR_H_ */
+#endif /* COLOR_HPP_ */

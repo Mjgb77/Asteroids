@@ -9,7 +9,8 @@
 // Asteroids
 #include "SDLEvent.hpp"
 #include "TimeManager.hpp"
-#include "Player.h"
+#include "Player.hpp"
+#include "Asteroid.hpp"
 
 namespace Engine
 {
@@ -68,6 +69,7 @@ namespace Engine
 		GameState::State					m_state;
 		Engine::TimeManager*				m_timer;
 		Player*								m_player;
+		Asteroid*							m_asteroid;
 	};
 }
 #endif /* GAME_HPP */
