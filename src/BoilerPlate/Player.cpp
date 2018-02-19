@@ -52,18 +52,18 @@ Player::Player(int width, int height)
 
 
 void Player::MoveForward() {
-	position->x += 10.0f*cos(rotAng + 0.5f*MathUtilities::PI);
-	position->y += 10.0f*sin(rotAng + 0.5f*MathUtilities::PI);
+	position->x += 10.0f*cos(m_rotAng + 0.5f*MathUtilities::PI);
+	position->y += 10.0f*sin(m_rotAng + 0.5f*MathUtilities::PI);
 
-	WarpPos();
+	WarpPosition();
 }
 
 void Player::RotateLeft() {
-	rotAng += 0.15f;
+	m_rotAng += 0.15f;
 }
 
 void Player::RotateRight() {
-	rotAng -= 0.15f;
+	m_rotAng -= 0.15f;
 }
 
 void Player::StartThrust() {
@@ -121,14 +121,9 @@ void Player::Render() {
 	glLoadIdentity();
 
 	glTranslatef(position->x, position->y, 0.0f);
-	glRotatef(MathUtilities::toDeg(rotAng), 0.0f, 0.0f, 1.0f);
+	glRotatef(MathUtilities::ToDeg(m_rotAng), 0.0f, 0.0f, 1.0f);
 
 	DrawShip();
 	if (isThrusting) DrawThrust();
 }
 
-bool Player::isOnCollision(Vector2 * objPos, float r) {
-	Vector2 dis = Vector2(objPos->x - position->x, objPos->y - position->y);
-	float getDis = dis.SquaredLength();
-	return getDis <= (r + 25.0f)*(r + 25.0f);
-}

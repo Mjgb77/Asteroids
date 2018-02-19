@@ -1,5 +1,5 @@
 #include "App.hpp"
-#include "ColorSetter.hpp"
+#include "Palette.hpp"
 #include <iostream>
 #include <algorithm>
 
@@ -151,7 +151,7 @@ namespace Engine
 
 	void App::Render()
 	{
-		ColorSetter::setBackground(ColorSetter::DarkNight);
+		Palette::SetBackground(Palette::DarkNight);
 		m_player->Render();
 		m_asteroid->Render();
 		

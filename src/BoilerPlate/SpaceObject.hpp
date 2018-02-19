@@ -6,11 +6,11 @@
 class SpaceObject
 {
 protected:
-	int width, height;
-	float mass;
-	float rotAng;
+	int m_width, m_height;
+	float m_mass;
+	float m_rotAng;
 	Vector2 * position;
-	void WarpPos();
+	void WarpPosition();
 public:
 	SpaceObject (int, int);
 

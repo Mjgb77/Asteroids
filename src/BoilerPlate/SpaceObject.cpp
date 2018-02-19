@@ -2,18 +2,18 @@
 
 
 SpaceObject::SpaceObject(int _width, int _height) : 
-	width(_width), height(_height), mass(1.0f), rotAng(0.0f) {
+	m_width(_width), m_height(_height), m_mass(1.0f), m_rotAng(0.0f) {
 
 }
 
-void SpaceObject::WarpPos () {
-	if (position->x > 0.5f*width) position->x -= width;
-	if (position->y > 0.5f*height) position->y -= height;
+void SpaceObject::WarpPosition () {
+	if (position->x > 0.5f*m_width) position->x -= m_width;
+	if (position->y > 0.5f*m_height) position->y -= m_height;
 
-	if (position->x < -0.5f*width) position->x += width;
-	if (position->y < -0.5f*height) position->y += height;
+	if (position->x < -0.5f*m_width) position->x += m_width;
+	if (position->y < -0.5f*m_height) position->y += m_height;
 }
 
 void SpaceObject::UpdateSize(int newWidth, int newHeight) {
-	width = newWidth, height = newHeight;
+	m_width = newWidth, m_height = newHeight;
 }

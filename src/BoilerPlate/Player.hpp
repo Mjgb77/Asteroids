@@ -21,7 +21,6 @@ public:
 	void Update() override;
 	void Render() override;
 
-	bool isOnCollision (Vector2 *, float r);
 };
 
 #endif // !PLAYER_HPP_

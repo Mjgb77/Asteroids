@@ -1,12 +1,12 @@
-#ifndef COLORSETTER_HPP_
-#define COLORSETTER_HPP_
+#ifndef PALETTE_HPP_
+#define PALETTE_HPP_
 
 #include "Color.hpp"
 
-class ColorSetter
+class Palette
 {
 public:
-	ColorSetter();
+	Palette();
 	
 	static const Color Amber;
 	static const Color Black;
@@ -14,8 +14,8 @@ public:
 	static const Color DarkNight;
 	static const Color Red;
 
-	static void setBackground(Color color);
+	static void SetBackground(Color color);
 };
 
-#endif /* COLORSETTER_HPP_ */
+#endif /* PALETTE_HPP_ */
 
