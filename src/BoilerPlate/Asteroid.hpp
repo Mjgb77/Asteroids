@@ -3,8 +3,8 @@
 
 #include "SpaceObject.hpp"
 
-enum AsteroidSize {SMALL, MEDIUM, BIG };
 
+enum AsteroidSize { SMALL, MEDIUM, BIG };
 
 class Asteroid : public SpaceObject {
 

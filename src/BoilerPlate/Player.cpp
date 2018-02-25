@@ -9,8 +9,11 @@
 
 std::vector <Vector2> shipPoints, thrusterPoints;
 
+const float ACC_FORCE = 10.0f;
 const float MAX_SPEED = 1000.0f;
 const float OFFSET_ANG = 0.5f*MathUtilities::PI;
+const float DRAG_FACTOR = 0.98f;
+const float ROT_FACTOR = 7.0f;
 const int CHARGE_TIME = 10;
 
 Player::Player(int width, int height)
@@ -21,53 +24,58 @@ Player::Player(int width, int height)
 	m_rotAng = OFFSET_ANG;
 	m_radius = 20.0f;
 
-	shipPoints.push_back({ 25.0f, 0.0f });
-	shipPoints.push_back({ -15.0f, 20.0f });
-	shipPoints.push_back({ -5.0f, 7.0f });
-	shipPoints.push_back({ -5.0f, -7.0f });
-	shipPoints.push_back({ -15.0f, -20.0f });
-	
-	thrusterPoints.push_back({ -10.0f , 5.0f });
-	thrusterPoints.push_back({ -12.0f, 8.0f });
-	thrusterPoints.push_back({ -11.0f, 5.0f });
-	thrusterPoints.push_back({ -15.f, 10.0f });
-	thrusterPoints.push_back({ -14.0f, 5.0f });
-	thrusterPoints.push_back({ -19.0f, 10.0f });
-	thrusterPoints.push_back({ -17.0f, 6.0f });
-	thrusterPoints.push_back({ -23.5f, 9.0f });
-	thrusterPoints.push_back({ -22.0f, 7.0f });
-	thrusterPoints.push_back({ -28.0f, 9.0f });
-	thrusterPoints.push_back({ -24.0f, 5.0f });
-	thrusterPoints.push_back({ -27.0f, 3.0f });
-	thrusterPoints.push_back({ -40.0f, 0.0f });
-	thrusterPoints.push_back({ -27.0f, -3.0f });
-	thrusterPoints.push_back({ -24.0f, -5.0f });
-	thrusterPoints.push_back({ -28.0f, -9.0f });
-	thrusterPoints.push_back({ -22.0f, -7.0f });
-	thrusterPoints.push_back({ -23.5f, -9.0f });
-	thrusterPoints.push_back({ -17.0f, -6.0f });
-	thrusterPoints.push_back({ -19.0f, -10.0f });
-	thrusterPoints.push_back({ -14.0f, -5.0f });
-	thrusterPoints.push_back({ -15.f, -10.0f });
-	thrusterPoints.push_back({ -11.0f , -5.0f });
-	thrusterPoints.push_back({ -12.0f, -8.0f });
-	thrusterPoints.push_back({ -10.0f, -5.0f });
+	/*INITIALIZING SHIP POINTS*/
+	{
+		shipPoints.push_back({ 25.0f, 0.0f });
+		shipPoints.push_back({ -15.0f, 20.0f });
+		shipPoints.push_back({ -5.0f, 7.0f });
+		shipPoints.push_back({ -5.0f, -7.0f });
+		shipPoints.push_back({ -15.0f, -20.0f });
+	}
 
+	/*INITIALIZING THRUSTER POINTS*/
+	{
+		thrusterPoints.push_back({ -10.0f , 5.0f });
+		thrusterPoints.push_back({ -12.0f, 8.0f });
+		thrusterPoints.push_back({ -11.0f, 5.0f });
+		thrusterPoints.push_back({ -15.f, 10.0f });
+		thrusterPoints.push_back({ -14.0f, 5.0f });
+		thrusterPoints.push_back({ -19.0f, 10.0f });
+		thrusterPoints.push_back({ -17.0f, 6.0f });
+		thrusterPoints.push_back({ -23.5f, 9.0f });
+		thrusterPoints.push_back({ -22.0f, 7.0f });
+		thrusterPoints.push_back({ -28.0f, 9.0f });
+		thrusterPoints.push_back({ -24.0f, 5.0f });
+		thrusterPoints.push_back({ -27.0f, 3.0f });
+		thrusterPoints.push_back({ -40.0f, 0.0f });
+		thrusterPoints.push_back({ -27.0f, -3.0f });
+		thrusterPoints.push_back({ -24.0f, -5.0f });
+		thrusterPoints.push_back({ -28.0f, -9.0f });
+		thrusterPoints.push_back({ -22.0f, -7.0f });
+		thrusterPoints.push_back({ -23.5f, -9.0f });
+		thrusterPoints.push_back({ -17.0f, -6.0f });
+		thrusterPoints.push_back({ -19.0f, -10.0f });
+		thrusterPoints.push_back({ -14.0f, -5.0f });
+		thrusterPoints.push_back({ -15.f, -10.0f });
+		thrusterPoints.push_back({ -11.0f , -5.0f });
+		thrusterPoints.push_back({ -12.0f, -8.0f });
+		thrusterPoints.push_back({ -10.0f, -5.0f });
+	}
 }
 
 
 void Player::MoveForward() {
-	Vector2 impulse = Vector2(cos(m_rotAng), sin(m_rotAng))*12.0f;
-	m_velocity += impulse * (1.0f / m_mass);
+	Vector2 impulse = Vector2(cos(m_rotAng), sin(m_rotAng))*ACC_FORCE;
+	m_velocity += impulse / m_mass;
 	WarpPosition();
 }
 
 void Player::RotateLeft(float deltaTime) {
-	m_rotAng += deltaTime*7;
+	m_rotAng += deltaTime*ROT_FACTOR;
 }
 
 void Player::RotateRight(float deltaTime) {
-	m_rotAng -= deltaTime*7;
+	m_rotAng -= deltaTime*ROT_FACTOR;
 }
 
 void Player::StartThrust() {
@@ -81,7 +89,7 @@ void Player::StopThrust() {
 }
 
 bool Player::IsRecharged() {
-	return charge == CHARGE_TIME;
+	return charge >= CHARGE_TIME;
 }
 
 void DrawShip() {
@@ -130,14 +138,14 @@ void DrawThrust() {
 
 void Player::Update(float deltaTime) {
 
-	if (charge < CHARGE_TIME) charge++;
+	if (!IsRecharged() ) charge++;
 
 	if (m_velocity.Length() > MAX_SPEED) {
 		m_velocity.Normalize();
 		m_velocity *= MAX_SPEED;
 	}
 
-	m_velocity *= 0.98f;
+	m_velocity *= DRAG_FACTOR;
 
 	SpaceObject::Update(deltaTime);
 }

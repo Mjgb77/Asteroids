@@ -1,6 +1,5 @@
 #include "Asteroid.hpp"
 
-
 #include "MathUtilities.hpp"
 #include "Vector2.hpp"
 
@@ -9,25 +8,31 @@
 
 #include <vector>
 #include <cmath>
-#include <cstdio>
 
 const int MAX_SPEED = 500;
+
 std::vector <Vector2> asteroidPoints;
 
-Asteroid::Asteroid (AsteroidSize _size, int width, int height)
-	: SpaceObject(width, height), m_asteroidSize(_size)
+inline float getSizeFactor(AsteroidSize size) {
+	return 2.0f*static_cast<int>(size) + 1;
+}
+
+Asteroid::Asteroid (AsteroidSize size, int width, int height)
+	: SpaceObject(width, height), m_asteroidSize(size)
 {
-	int asteroidSizeToInt = (2 * static_cast<int>(_size) + 1);
+	float sizeFactor = getSizeFactor(size);
 	
-	m_mass = asteroidSizeToInt * 1.0f;
-	m_radius = asteroidSizeToInt * 15.0f;
-	m_rotAng = MathUtilities::Interpolate(0.0f, MathUtilities::PI * 2.0f, MathUtilities::RandFloat());
+	m_mass = sizeFactor;
+	m_radius = 15.0f*sizeFactor;
+	m_rotAng = MathUtilities::Interpolate(0.0f, MathUtilities::PI * 2.0f, MathUtilities::RandFloat()); //RANDOM FLOAT BETWEEN (0.0, 2PI);
 	
 	m_position = Vector2(MathUtilities::RandInt(m_width)-m_width/2, MathUtilities::RandInt(m_height) - m_height/2);
 	
-	Vector2 impulse = Vector2(cos(m_rotAng), sin(m_rotAng))*static_cast<float>(MathUtilities::RandInt(MAX_SPEED));
-	m_velocity = impulse * (1.0f / m_mass);
+	Vector2 initialImpulse = Vector2(cos(m_rotAng), sin(m_rotAng)) * static_cast<float>(MathUtilities::RandInt(MAX_SPEED));
+	m_velocity = initialImpulse / m_mass;
 	
+	/*INITIALIZING ASTEROIDS POINTS*/
+	{
 	asteroidPoints.push_back({ 0.0f, 15.0f });
 	asteroidPoints.push_back({ 5.9f, 13.8f });
 	asteroidPoints.push_back({ 12.0f, 6.0f });
@@ -41,6 +46,7 @@ Asteroid::Asteroid (AsteroidSize _size, int width, int height)
 	asteroidPoints.push_back({ -14.77f, -2.63f });
 	asteroidPoints.push_back({ -13.61f, 6.3f });
 	asteroidPoints.push_back({ -10.69f, 10.52f });
+	}
 }
 
 
@@ -70,9 +76,10 @@ Asteroid * Asteroid::getAsteroidOfLessSize()
 	if (m_asteroidSize == SMALL) return nullptr;
 	
 	int id = static_cast<int>(m_asteroidSize);
-	
 	AsteroidSize newSize = static_cast<AsteroidSize>(id - 1);
+	
 	Asteroid * newAsteroid = new Asteroid(newSize, m_width, m_height);
 	newAsteroid->m_position = m_position;
+
 	return newAsteroid;
 }

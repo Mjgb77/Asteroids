@@ -14,7 +14,9 @@ Game::Game(int width, int height) : m_width(width), m_height(height) {
 }
 
 Game::~Game() {
-
+	delete m_player;
+	m_asteroids.clear();
+	m_bullets.clear();
 }
 
 /*PUBLIC FUNCTIONS*/
@@ -32,7 +34,7 @@ bool DEBUG_MODE = false;
 
 void Game::Update(float deltaTime)
 {
-	/*DEBUGGING*/
+	/*CHECK DEBUG*/
 	
 	if (InputManager::Instance().IsKeyPressed('d')) DEBUG_MODE ^= 1; //IF DEBUG KEY IS PRESSED TOOGLE DEBUG MODE
 	if (DEBUG_MODE) {
@@ -40,14 +42,14 @@ void Game::Update(float deltaTime)
 		return;
 	}
 
-	/*END DEBUGGING*/
+	/*END CHECK DEBUG*/
 
+	/*READ INPUT GAME*/
 	ReadInput(deltaTime);
 
+	/*UPDATE GAME MEMBERS*/
 	m_player->Update(deltaTime);
-
 	for (auto bullet : m_bullets) bullet->Update(deltaTime);
-
 	CleanDeadBullets();
 
 	std::list <Asteroid*> asteroidsToAdd;

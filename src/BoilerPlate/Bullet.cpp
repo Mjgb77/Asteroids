@@ -3,6 +3,7 @@
 #include <GL/glew.h>
 #include <SDL2/SDL_opengl.h>
 
+#include "Player.hpp"
 #include "MathUtilities.hpp"
 
 const int MAX_LIFE_TIME = 30;

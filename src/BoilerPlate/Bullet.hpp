@@ -2,7 +2,6 @@
 #define BULLET_HPP_
 
 #include "SpaceObject.hpp"
-#include "Player.hpp"
 
 class Player;
 
