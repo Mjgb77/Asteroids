@@ -2,23 +2,40 @@
 #define SPACEOBJECT_HPP_
 
 #include "Vector2.hpp"
+#include "Color.hpp"
+
+class Game;
 
 class SpaceObject
 {
-protected:
-	int m_width, m_height;
-	float m_mass;
-	float m_rotAng;
-	Vector2 * position;
-	void WarpPosition();
+
 public:
-	SpaceObject (int, int);
+	/*CONSTRUCTOR*/
+	SpaceObject(Game *);
 
-	void UpdateSize(int, int);
+	/*PUBLIC FUNCTIONS*/
+	bool HasCollisionWith(SpaceObject *);
 
-	virtual void Update () = 0;
-	virtual void Render () = 0;
+	void Update(float);
+	virtual void Render() = 0;
+
+	/*DEBUGGING MEMBERS AND FUNCTIONS*/
+	Color m_circleColor;
+	void DrawCircleAround();
+	void DrawSegmentIfNearbyTo(SpaceObject *);
+
+protected:
+	/*PROTECTED MEMBERS*/
+	Game * m_parent;
+	
+	float m_mass;
+	float m_radius;
+	float m_rotAng;
+	
+	Vector2 m_position, m_velocity;
+	
+	/*PROTECTED FUNCTIONS*/
+	void WarpPosition();
 };
 
 #endif // !SPACEOBJECT_HPP_
-

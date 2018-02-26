@@ -3,24 +3,33 @@
 
 #include "Vector2.hpp"
 #include "SpaceObject.hpp"
+#include "Bullet.hpp"
+
+const int MAX_NUMBER_OF_BULLETS = 4;
 
 class Player : public SpaceObject {
 
 	bool isThrusting;
-	
+	int charge;
+
 public:
-	Player(int, int);
-;
+
+	Player(Game *);
+
 	void MoveForward ();
-	void RotateLeft();
-	void RotateRight();
+	void RotateLeft(float);
+	void RotateRight(float);
 	
 	void StartThrust ();
 	void StopThrust ();
 
-	void Update() override;
+	bool IsReadyToShot();
+
+	void Update(float);
 	void Render() override;
 
+	void Reset();
+	Bullet * Shot();
 };
 
 #endif // !PLAYER_HPP_

@@ -1,5 +1,7 @@
 #include "App.hpp"
 #include "Palette.hpp"
+#include "InputManager.hpp"
+
 #include <iostream>
 #include <algorithm>
 
@@ -7,11 +9,9 @@
 #include <GL/glew.h>
 #include <SDL2/SDL_opengl.h>
 
+
 namespace Engine
 {
-	float unitMove = 5.0f;
-
-
 	const float DESIRED_FRAME_RATE = 60.0f;
 	const float DESIRED_FRAME_TIME = 1.0f / DESIRED_FRAME_RATE;
 
@@ -23,17 +23,15 @@ namespace Engine
 		, m_timer(new TimeManager)
 		, m_mainWindow(nullptr)
 	{
-		m_player = new Player(m_width,m_height);
-		m_asteroid = new Asteroid(BIG, m_width, m_height);
-
 		m_state = GameState::UNINITIALIZED;
 		m_lastFrameTime = m_timer->GetElapsedTimeInSeconds();
+		m_game = new Game(width, height);
 	}
 
 	App::~App()
 	{
 		CleanupSDL();
-		if (m_player) delete m_player;
+		if (m_game) delete m_game;
 	}
 
 	void App::Execute()
@@ -59,6 +57,8 @@ namespace Engine
 			//
 			Update();
 			Render();
+
+			KeyboardPollEvent();
 		}
 	}
 
@@ -86,25 +86,7 @@ namespace Engine
 
 	void App::OnKeyDown(SDL_KeyboardEvent keyBoardEvent)
 	{
-		switch (keyBoardEvent.keysym.scancode)
-		{
-		case SDL_SCANCODE_UP:
-			SDL_Log("UP");
-			m_player->MoveForward();
-			m_player->StartThrust();
-			break;
-		case SDL_SCANCODE_RIGHT:
-			SDL_Log("RIGHT");
-			m_player->RotateRight();
-			break;
-		case SDL_SCANCODE_LEFT:
-			SDL_Log("LEFT");
-			m_player->RotateLeft();
-			break;
-		default:
-			SDL_Log("%S was pressed.", keyBoardEvent.keysym.scancode);
-			break;
-		}
+		OnKeyboardDownEvent(keyBoardEvent.keysym.sym);
 	}
 
 	void App::OnKeyUp(SDL_KeyboardEvent keyBoardEvent)
@@ -114,24 +96,17 @@ namespace Engine
 		case SDL_SCANCODE_ESCAPE:
 			OnExit();
 			break;
-
-		case SDL_SCANCODE_UP:
-			m_player->StopThrust();
-			break;
 		default:
-			//DO NOTHING
+			OnKeyboardReleasedEvent(keyBoardEvent.keysym.sym);
 			break;
 		}
 	}
 
 	void App::Update()
 	{
-		double startTime = m_timer->GetElapsedTimeInSeconds();
-
-		// Update code goes here
-		//
-
+		double startTime = m_lastFrameTime;
 		double endTime = m_timer->GetElapsedTimeInSeconds();
+		
 		double nextTimeFrame = startTime + DESIRED_FRAME_TIME;
 
 		while (endTime < nextTimeFrame)
@@ -140,20 +115,20 @@ namespace Engine
 			endTime = m_timer->GetElapsedTimeInSeconds();
 		}
 
-		//double elapsedTime = endTime - startTime;        
+		double elapsedTime = endTime - startTime;
+
+		m_game->Update(elapsedTime);
 
 		m_lastFrameTime = m_timer->GetElapsedTimeInSeconds();
-
 		m_nUpdates++;
 
-		m_asteroid->Update();
 	}
 
 	void App::Render()
 	{
 		Palette::SetBackground(Palette::DarkNight);
-		m_player->Render();
-		m_asteroid->Render();
+		
+		m_game->Render();
 		
 		SDL_GL_SwapWindow(m_mainWindow);
 	}
@@ -254,8 +229,7 @@ namespace Engine
 		m_width = width;
 		m_height = height;
 
-		m_player->UpdateSize(width, height);
-		m_asteroid->UpdateSize(width, height);
+		m_game->UpdateSize(width, height);
 
 		SetupViewport();
 	}
