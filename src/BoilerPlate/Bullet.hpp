@@ -3,12 +3,14 @@
 
 #include "SpaceObject.hpp"
 
-class Player;
+const float SHOT_FORCE = 10.0f;
 
 class Bullet : public SpaceObject {
+
+	friend class Player;
 	int m_lifeTime;
 public:
-	Bullet(Player*, int, int);
+	Bullet(Game *);
 	bool IsLifeTimeEnded();
 
 	void Update(float);

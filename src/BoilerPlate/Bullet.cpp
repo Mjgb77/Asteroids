@@ -3,27 +3,15 @@
 #include <GL/glew.h>
 #include <SDL2/SDL_opengl.h>
 
-#include "Player.hpp"
 #include "MathUtilities.hpp"
 
 const int MAX_LIFE_TIME = 30;
-const float SHOT_FORCE = 10.0f;
 
-Bullet::Bullet(Player * shooter, int width, int height)
-	: SpaceObject(width, height) {
+Bullet::Bullet(Game* parent)
+	: SpaceObject(parent) {
+	m_lifeTime = 0;
 	m_mass = 0.01f;
 	m_radius = 3.0f;
-	m_lifeTime = 0;
-	
-	m_position = shooter->m_position;
-	m_rotAng = shooter->m_rotAng;
-
-	Vector2 impulse = Vector2(cos(m_rotAng), sin(m_rotAng)) * SHOT_FORCE;
-	
-	m_velocity = impulse / m_mass;
-	m_velocity += shooter->m_velocity;
-	
-	shooter->m_velocity -= impulse / shooter->m_mass;
 }
 
 bool Bullet::IsLifeTimeEnded() {

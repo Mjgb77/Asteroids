@@ -9,7 +9,7 @@ enum AsteroidSize { SMALL, MEDIUM, BIG };
 class Asteroid : public SpaceObject {
 
 public:
-	Asteroid(AsteroidSize, int, int);
+	Asteroid(AsteroidSize, Game *);
 
 	AsteroidSize getSize();
 

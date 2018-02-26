@@ -13,14 +13,15 @@ public:
 	Game(int, int);
 	~Game();
 
+	/*PUBLIC MEMBERS*/
+	int m_width, m_height;
+
 	/*PUBLIC FUNCTIONS*/
 	void UpdateSize(int, int);
 	void Update(float);
 	void Render();
 
 private:
-	/*PRVIVATE MEMBERS*/
-	int m_width, m_height;
 	
 	/*GAME OBJECTS*/
 	Player * m_player;
@@ -32,6 +33,7 @@ private:
 	
 	bool CheckCollisionWithBullets(Asteroid *);
 	bool CheckCollisionWithPlayer(Asteroid *);
+	void CheckCollisionOfAsteroids();
 	
 	void CleanDeadBullets();
 

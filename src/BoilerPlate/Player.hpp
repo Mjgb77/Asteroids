@@ -5,18 +5,16 @@
 #include "SpaceObject.hpp"
 #include "Bullet.hpp"
 
-const int MAX_NUMBER_OF_BULLETS = 5;
+const int MAX_NUMBER_OF_BULLETS = 4;
 
 class Player : public SpaceObject {
-	
-	friend class Bullet;
 
 	bool isThrusting;
 	int charge;
 
 public:
 
-	Player(int, int);
+	Player(Game *);
 
 	void MoveForward ();
 	void RotateLeft(float);
@@ -25,7 +23,7 @@ public:
 	void StartThrust ();
 	void StopThrust ();
 
-	bool IsRecharged();
+	bool IsReadyToShot();
 
 	void Update(float);
 	void Render() override;

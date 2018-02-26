@@ -1,6 +1,7 @@
 #include "SpaceObject.hpp"
 #include "MathUtilities.hpp"
 
+#include "Game.hpp"
 
 #include <GL/glew.h>
 #include <SDL2/SDL_opengl.h>
@@ -8,13 +9,10 @@
 #include <cstdio>
 
 /*PUBLIC FUNCTIONS*/
-SpaceObject::SpaceObject(int width, int height) : 
-	m_width(width), m_height(height), m_mass(1.0f), m_rotAng(0.0f) {
+SpaceObject::SpaceObject(Game * parent) : 
+	m_parent(parent), m_mass(1.0f), m_rotAng(0.0f) {
 }
 
-void SpaceObject::UpdateSize(int newWidth, int newHeight) {
-	m_width = newWidth, m_height = newHeight;
-}
 
 bool SpaceObject::HasCollisionWith(SpaceObject * obj)
 {
@@ -68,9 +66,9 @@ void SpaceObject::DrawSegmentIfNearbyTo(SpaceObject * obj)
 
 /*PROTECTED FUNCTIONS*/
 void SpaceObject::WarpPosition () {
-	if (m_position.x > 0.5f*m_width) m_position.x -= m_width;
-	if (m_position.y > 0.5f*m_height) m_position.y -= m_height;
+	if (m_position.x > 0.5f*m_parent->m_width) m_position.x -= m_parent->m_width;
+	if (m_position.y > 0.5f*m_parent->m_height) m_position.y -= m_parent->m_height;
 
-	if (m_position.x < -0.5f*m_width) m_position.x += m_width;
-	if (m_position.y < -0.5f*m_height) m_position.y += m_height;
+	if (m_position.x < -0.5f*m_parent->m_width) m_position.x += m_parent->m_width;
+	if (m_position.y < -0.5f*m_parent->m_height) m_position.y += m_parent->m_height;
 }

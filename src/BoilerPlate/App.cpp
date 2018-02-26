@@ -104,12 +104,9 @@ namespace Engine
 
 	void App::Update()
 	{
-		double startTime = m_timer->GetElapsedTimeInSeconds();
-
-		// Update code goes here
-		//
-
+		double startTime = m_lastFrameTime;
 		double endTime = m_timer->GetElapsedTimeInSeconds();
+		
 		double nextTimeFrame = startTime + DESIRED_FRAME_TIME;
 
 		while (endTime < nextTimeFrame)
@@ -123,7 +120,6 @@ namespace Engine
 		m_game->Update(elapsedTime);
 
 		m_lastFrameTime = m_timer->GetElapsedTimeInSeconds();
-
 		m_nUpdates++;
 
 	}

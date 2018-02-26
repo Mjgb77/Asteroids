@@ -9,7 +9,7 @@
 /*CONSTRUCTOR/DESTRUCTOR*/
 Game::Game(int width, int height) : m_width(width), m_height(height) {
 	
-	m_player = new Player(m_width, m_height);
+	m_player = new Player(this);
 	CreateAsteroids(5);
 }
 
@@ -23,11 +23,6 @@ Game::~Game() {
 
 void Game::UpdateSize(int width, int height) {
 	m_width = width, m_height = height;
-
-	m_player->UpdateSize(width, height);
-
-	for (auto asteroid : m_asteroids) asteroid->UpdateSize(width, height);
-	for (auto bullet : m_bullets) bullet->UpdateSize(width,height);
 }
 
 bool DEBUG_MODE = false;
@@ -50,24 +45,12 @@ void Game::Update(float deltaTime)
 	/*UPDATE GAME MEMBERS*/
 	m_player->Update(deltaTime);
 	for (auto bullet : m_bullets) bullet->Update(deltaTime);
+	for (auto asteroid : m_asteroids) asteroid->Update(deltaTime);
+	
 	CleanDeadBullets();
 
-	std::list <Asteroid*> asteroidsToAdd;
+	CheckCollisionOfAsteroids();
 
-	for (auto asteroid = m_asteroids.begin(); asteroid != m_asteroids.end(); ) {
-		(*asteroid)->Update(deltaTime);
-
-		if (CheckCollisionWithBullets(*asteroid) || CheckCollisionWithPlayer(*asteroid)) {
-			if ((*asteroid)->getSize() != SMALL) {
-				asteroidsToAdd.push_back((*asteroid)->getAsteroidOfLessSize());
-				asteroidsToAdd.push_back((*asteroid)->getAsteroidOfLessSize());
-			}
-			asteroid = m_asteroids.erase(asteroid);
-		}
-		else asteroid++;
-	}
-
-	for (auto it : asteroidsToAdd) m_asteroids.push_back(it);
 }
 
 void Game::Render()
@@ -84,7 +67,7 @@ void Game::Render()
 
 void Game::CreateAsteroids(int count) {
 	while (count--)
-		m_asteroids.push_back(new Asteroid(BIG, m_width, m_height));
+		m_asteroids.push_back(new Asteroid(BIG, this));
 }
 
 bool Game::CheckCollisionWithBullets(Asteroid *tAsteroid) {
@@ -108,6 +91,26 @@ bool Game::CheckCollisionWithPlayer(Asteroid *tAsteroid) {
 	}
 	return false;
 }
+
+void Game::CheckCollisionOfAsteroids() {
+	std::list <Asteroid*> asteroidsToAdd;
+
+	for (auto asteroid = m_asteroids.begin(); asteroid != m_asteroids.end(); ) {
+
+		if (CheckCollisionWithBullets(*asteroid) || CheckCollisionWithPlayer(*asteroid)) {
+			if ((*asteroid)->getSize() != SMALL) {
+				asteroidsToAdd.push_back((*asteroid)->getAsteroidOfLessSize());
+				asteroidsToAdd.push_back((*asteroid)->getAsteroidOfLessSize());
+			}
+			asteroid = m_asteroids.erase(asteroid);
+		}
+		else asteroid++;
+	}
+
+	for (auto it : asteroidsToAdd) m_asteroids.push_back(it);
+
+}
+
 void Game::CleanDeadBullets() {
 	for (auto bullet = m_bullets.begin(); bullet != m_bullets.end(); ) {
 		if ((*bullet)->IsLifeTimeEnded()) bullet = m_bullets.erase(bullet);
@@ -121,7 +124,7 @@ void Game::ReadInput(float deltaTime) {
 	if (InputManager::Instance().IsKeyReleased(82)) m_player->StopThrust();
 
 	/*SHOOT*/
-	if (InputManager::Instance().IsKeyDown(32) && m_player->IsRecharged() && m_bullets.size() < MAX_NUMBER_OF_BULLETS) m_bullets.push_back(m_player->Shot());
+	if (InputManager::Instance().IsKeyDown(32) && m_player->IsReadyToShot() && m_bullets.size() < MAX_NUMBER_OF_BULLETS) m_bullets.push_back(m_player->Shot());
 
 	/*MOVEMENT*/
 	if (InputManager::Instance().IsKeyDown(82)) m_player->MoveForward();
@@ -133,8 +136,8 @@ void Game::ReadInput(float deltaTime) {
 /*DEBUG VARIABLES*/
 
 int plotLength = 250;
-float DESIRED_FRAME_RATE = 1.0f / 60;
-std::vector <float> frameRate(plotLength, DESIRED_FRAME_RATE);
+float DESIRED_FRAME_TIME = 1.0f / 60;
+std::vector <float> frameRate(plotLength, DESIRED_FRAME_TIME);
 
 /*DEBUG FUNCTIONS*/
 
@@ -208,24 +211,27 @@ void Game::RenderDebug() {
 
 	/*DRAWING PLOT*/
 	{
-		int xStart = m_width / 2 - 400;
-		int yStart = 100 - m_height / 2;
+		const int xStart = m_width / 2 - 500;
+		const int yStart = 100 - m_height / 2;
+
+		const float xScale = 1.5f;
+		const float yScale = 1000.0f;
 
 		glLoadIdentity();
-		glTranslatef(0, 0, 0.0f);
-
+		glTranslatef(xStart, yStart, 0.0f);
 		glColor3f(1.0f, 0.2f, 0.0f);
+		glLineWidth(1.0f);
 		glBegin(GL_LINE_STRIP);
 
 		for (int i = 0; i < plotLength; i++)
-			glVertex2f(xStart + i, (frameRate[i] * 1000) + yStart);
+			glVertex2f(i * xScale, frameRate[i] * yScale);
 
 		glEnd();
 
 		glColor3f(0.2f, 1.0f, 0.0f);
 		glBegin(GL_LINE_STRIP);
-		glVertex2f(xStart, (DESIRED_FRAME_RATE * 1000) + yStart);
-		glVertex2f(xStart + plotLength, (DESIRED_FRAME_RATE * 1000) + yStart);
+		glVertex2f(0.0f, DESIRED_FRAME_TIME * yScale);
+		glVertex2f(plotLength * xScale, DESIRED_FRAME_TIME * yScale);
 		glEnd();
 	}
 }

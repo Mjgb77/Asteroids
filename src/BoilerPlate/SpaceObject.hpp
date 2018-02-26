@@ -4,16 +4,16 @@
 #include "Vector2.hpp"
 #include "Color.hpp"
 
+class Game;
+
 class SpaceObject
 {
 
 public:
 	/*CONSTRUCTOR*/
-	SpaceObject(int, int);
+	SpaceObject(Game *);
 
 	/*PUBLIC FUNCTIONS*/
-	void UpdateSize(int, int);
-
 	bool HasCollisionWith(SpaceObject *);
 
 	void Update(float);
@@ -26,7 +26,7 @@ public:
 
 protected:
 	/*PROTECTED MEMBERS*/
-	int m_width, m_height;
+	Game * m_parent;
 	
 	float m_mass;
 	float m_radius;
