@@ -3,6 +3,7 @@
 
 #include "Vector2.hpp"
 #include "Color.hpp"
+#include <vector>
 
 class Game;
 
@@ -14,6 +15,7 @@ public:
 	SpaceObject(Game *);
 
 	/*PUBLIC FUNCTIONS*/
+	std::vector<Vector2> GetPointsFrom(std::string);
 	bool HasCollisionWith(SpaceObject *);
 
 	void Update(float);

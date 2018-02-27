@@ -8,7 +8,6 @@
 
 /*CONSTRUCTOR/DESTRUCTOR*/
 Game::Game(int width, int height) : m_width(width), m_height(height) {
-	
 	m_player = new Player(this);
 	CreateAsteroids(5);
 }
@@ -113,7 +112,7 @@ void Game::CheckCollisionOfAsteroids() {
 
 void Game::CleanDeadBullets() {
 	for (auto bullet = m_bullets.begin(); bullet != m_bullets.end(); ) {
-		if ((*bullet)->IsLifeTimeEnded()) bullet = m_bullets.erase(bullet);
+		if ((*bullet)->IsLifeTimeOver()) bullet = m_bullets.erase(bullet);
 		else bullet++;
 	}
 }
@@ -127,19 +126,19 @@ void Game::ReadInput(float deltaTime) {
 	if (InputManager::Instance().IsKeyDown(32) && m_player->IsReadyToShot() && m_bullets.size() < MAX_NUMBER_OF_BULLETS) m_bullets.push_back(m_player->Shot());
 
 	/*MOVEMENT*/
-	if (InputManager::Instance().IsKeyDown(82)) m_player->MoveForward();
+	if (InputManager::Instance().IsKeyDown(82)) m_player->MoveForward(deltaTime);
 	if (InputManager::Instance().IsKeyDown(80)) m_player->RotateLeft(deltaTime);
 	if (InputManager::Instance().IsKeyDown(79)) m_player->RotateRight(deltaTime);
 
 }
 
-/*DEBUG VARIABLES*/
+/*DEBUGGING VARIABLES*/
 
 int plotLength = 250;
 float DESIRED_FRAME_TIME = 1.0f / 60;
 std::vector <float> frameRate(plotLength, DESIRED_FRAME_TIME);
 
-/*DEBUG FUNCTIONS*/
+/*DEBUGGING FUNCTIONS*/
 
 bool Game::DeleteAsteroid() {
 	if (!m_asteroids.size()) return false; //If there are no Asteroid

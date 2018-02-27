@@ -7,12 +7,30 @@
 #include <SDL2/SDL_opengl.h>
 
 #include <cstdio>
+#include <fstream>
 
 /*PUBLIC FUNCTIONS*/
 SpaceObject::SpaceObject(Game * parent) : 
 	m_parent(parent), m_mass(1.0f), m_rotAng(0.0f) {
 }
 
+
+std::vector<Vector2> SpaceObject::GetPointsFrom(std::string fileName)
+{
+	std::ifstream ifs(fileName);
+
+	std::vector<Vector2> points;
+
+	while (ifs.good()) {
+		float x, y;
+		ifs >> x >> y;
+		points.push_back({ x, y });
+	}
+
+	ifs.close();
+
+	return points;
+}
 
 bool SpaceObject::HasCollisionWith(SpaceObject * obj)
 {

@@ -47,4 +47,9 @@
       <UniqueIdentifier>{da8cc683-e66e-46b9-be58-7d0e16e23f76}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="AsteroidPoints.txt" />
+    <Text Include="ShipPoints.txt" />
+    <Text Include="ThrusterPoints.txt" />
+  </ItemGroup>
 </Project>
