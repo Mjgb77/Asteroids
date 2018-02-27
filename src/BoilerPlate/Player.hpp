@@ -1,7 +1,6 @@
 #ifndef PLAYER_HPP_
 #define PLAYER_HPP_
 
-#include "Vector2.hpp"
 #include "SpaceObject.hpp"
 #include "Bullet.hpp"
 
@@ -9,14 +8,13 @@ const int MAX_NUMBER_OF_BULLETS = 4;
 
 class Player : public SpaceObject {
 
-	bool isThrusting;
-	int charge;
-
 public:
-
+	/*CONSTRUCTOR*/
 	Player(Game *);
 
-	void MoveForward ();
+	/*PUBLIC FUNCTIONS*/
+
+	void MoveForward (float);
 	void RotateLeft(float);
 	void RotateRight(float);
 	
@@ -29,7 +27,13 @@ public:
 	void Render() override;
 
 	void Reset();
+
 	Bullet * Shot();
+
+private:
+	/*PRIVATE MEMBERS*/
+	bool isThrusting;
+	int charge;
 };
 
 #endif // !PLAYER_HPP_

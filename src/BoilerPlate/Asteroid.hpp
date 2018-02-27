@@ -9,7 +9,10 @@ enum AsteroidSize { SMALL, MEDIUM, BIG };
 class Asteroid : public SpaceObject {
 
 public:
+	/*CONSTRUCTOR*/
 	Asteroid(AsteroidSize, Game *);
+
+	/*PUBLIC FUNCTIONS*/
 
 	AsteroidSize getSize();
 
@@ -18,6 +21,7 @@ public:
 	void Render() override;
 
 private:
+	/*PRIVATE MEMBERS*/
 	AsteroidSize m_asteroidSize;
 };
 

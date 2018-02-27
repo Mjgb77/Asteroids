@@ -8,9 +8,13 @@
 
 #include <vector>
 #include <cmath>
+
 #include "Game.hpp"
 
-const int MAX_SPEED = 500;
+class Game;
+
+
+const float MAX_SPEED = 400.0f;
 
 std::vector <Vector2> asteroidPoints;
 
@@ -18,7 +22,7 @@ inline float GetSizeFactor(AsteroidSize size) {
 	return 2.0f*static_cast<int>(size) + 1;
 }
 
-class Game;
+/*CONSTRUCTOR*/
 
 Asteroid::Asteroid (AsteroidSize size, Game * parent)
 	: SpaceObject(parent), m_asteroidSize(size)
@@ -27,31 +31,18 @@ Asteroid::Asteroid (AsteroidSize size, Game * parent)
 	
 	m_mass = sizeFactor;
 	m_radius = 15.0f*sizeFactor;
-	m_rotAng = MathUtilities::Interpolate(0.0f, MathUtilities::PI * 2.0f, MathUtilities::RandFloat()); //RANDOM FLOAT BETWEEN (0.0, 2PI);
 	
-	m_position = Vector2(MathUtilities::RandInt(parent->m_width)- parent->m_width/2, MathUtilities::RandInt(parent->m_height) - parent->m_height/2);
+	m_rotAng = MathUtilities::RandFloat() * (2.0f * MathUtilities::PI); //Random float between (0.0, 2PI);
+	m_position = Vector2(parent->m_width * (MathUtilities::RandFloat() - 0.5f), parent->m_height * (MathUtilities::RandFloat() - 0.5f)); //Random position within the game viewport
 	
-	Vector2 initialImpulse = Vector2(cos(m_rotAng), sin(m_rotAng)) * static_cast<float>(MathUtilities::RandInt(MAX_SPEED));
+	Vector2 initialImpulse = Vector2(cos(m_rotAng), sin(m_rotAng)) * (MAX_SPEED * MathUtilities::RandFloat()); //Random vector force with magnitude between 0 and MAX_SPEED
 	m_velocity = initialImpulse / m_mass;
 	
+	asteroidPoints = GetPointsFrom("AsteroidPoints.txt");
 }
 
-//TODO:: READ FROM A FILE
-void InitializeAsteroidPoints() {
-	asteroidPoints.push_back({ 0.0f, 15.0f });
-	asteroidPoints.push_back({ 5.9f, 13.8f });
-	asteroidPoints.push_back({ 12.0f, 6.0f });
-	asteroidPoints.push_back({ 12.82f, 7.78f });
-	asteroidPoints.push_back({ 14.92f, -1.57f });
-	asteroidPoints.push_back({ 12.63f, -8.08f });
-	asteroidPoints.push_back({ 5.35f, -13.96f });
-	asteroidPoints.push_back({ -1.73f, -14.9f });
-	asteroidPoints.push_back({ -5.0f, -10.0f });
-	asteroidPoints.push_back({ -11.0f, -10.0f });
-	asteroidPoints.push_back({ -14.77f, -2.63f });
-	asteroidPoints.push_back({ -13.61f, 6.3f });
-	asteroidPoints.push_back({ -10.69f, 10.52f });
-}
+
+/*PUBLIC FUNCTIONS*/
 
 AsteroidSize Asteroid::getSize() {
 	return m_asteroidSize;

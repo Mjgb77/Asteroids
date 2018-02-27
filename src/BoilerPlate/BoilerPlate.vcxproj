@@ -206,6 +206,11 @@ copy /Y "$(SolutionDir)\Externals\SDL2-2.0.4\lib\x64\SDL2.dll" "$(TargetDir)SDL2
     <ClInclude Include="Vector3.hpp" />
     <ClInclude Include="Vector4.hpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="AsteroidPoints.txt" />
+    <Text Include="ShipPoints.txt" />
+    <Text Include="ThrusterPoints.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

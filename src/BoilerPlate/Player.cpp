@@ -6,54 +6,26 @@
 #include <SDL2/SDL_opengl.h>
 
 #include <vector>
-#include <string>
+
 std::vector <Vector2> shipPoints, thrusterPoints;
 
-const float ACC_FORCE = 10.0f;
+/*CONSTANTS*/
+
+/*This values will be affected by delta time*/
+const float ACC_FORCE = 700.0f;
+const float ROT_FORCE = 7.0f;
+/**/
+
+const float OFFSET_ANG = 0.5f*MathUtilities::PI; //Starting direction of the ship
+
 const float MAX_SPEED = 1000.0f;
-const float OFFSET_ANG = 0.5f*MathUtilities::PI;
+
 const float DRAG_FACTOR = 0.98f;
-const float ROT_FACTOR = 7.0f;
-const int CHARGE_TIME = 5;
+const int CHARGE_TIME = 5; //Units of time until Ship is ready to fire
 
-//TODO:: READ FROM A FILE
-void InitializeShipPoints() {
-	shipPoints.push_back({ 25.0f, 0.0f });
-	shipPoints.push_back({ -15.0f, 20.0f });
-	shipPoints.push_back({ -5.0f, 7.0f });
-	shipPoints.push_back({ -5.0f, -7.0f });
-	shipPoints.push_back({ -15.0f, -20.0f });
-}
+/**/
 
-//TODO:: READ FROM A FILE
-void InitializeThrusterPoints() {
-	thrusterPoints.push_back({ -10.0f , 5.0f });
-	thrusterPoints.push_back({ -12.0f, 8.0f });
-	thrusterPoints.push_back({ -11.0f, 5.0f });
-	thrusterPoints.push_back({ -15.f, 10.0f });
-	thrusterPoints.push_back({ -14.0f, 5.0f });
-	thrusterPoints.push_back({ -19.0f, 10.0f });
-	thrusterPoints.push_back({ -17.0f, 6.0f });
-	thrusterPoints.push_back({ -23.5f, 9.0f });
-	thrusterPoints.push_back({ -22.0f, 7.0f });
-	thrusterPoints.push_back({ -28.0f, 9.0f });
-	thrusterPoints.push_back({ -24.0f, 5.0f });
-	thrusterPoints.push_back({ -27.0f, 3.0f });
-	thrusterPoints.push_back({ -40.0f, 0.0f });
-	thrusterPoints.push_back({ -27.0f, -3.0f });
-	thrusterPoints.push_back({ -24.0f, -5.0f });
-	thrusterPoints.push_back({ -28.0f, -9.0f });
-	thrusterPoints.push_back({ -22.0f, -7.0f });
-	thrusterPoints.push_back({ -23.5f, -9.0f });
-	thrusterPoints.push_back({ -17.0f, -6.0f });
-	thrusterPoints.push_back({ -19.0f, -10.0f });
-	thrusterPoints.push_back({ -14.0f, -5.0f });
-	thrusterPoints.push_back({ -15.f, -10.0f });
-	thrusterPoints.push_back({ -11.0f , -5.0f });
-	thrusterPoints.push_back({ -12.0f, -8.0f });
-	thrusterPoints.push_back({ -10.0f, -5.0f });
-}
-
+/*CONSTRUCTOR*/
 Player::Player(Game * parent)
 	: SpaceObject(parent), isThrusting(false) 
 {
@@ -62,29 +34,32 @@ Player::Player(Game * parent)
 	m_rotAng = OFFSET_ANG;
 	m_radius = 20.0f;
 
-	InitializeShipPoints();
-	InitializeThrusterPoints();
+	shipPoints = GetPointsFrom("ShipPoints.txt");
+	thrusterPoints = GetPointsFrom("ThrusterPoints.txt");
 }
 
-void Player::MoveForward() {
-	Vector2 impulse = Vector2(cos(m_rotAng), sin(m_rotAng))*ACC_FORCE;
+/*PUBLIC FUNCTIONS*/
+
+void Player::MoveForward(float deltaTime) {
+	Vector2 impulse = Vector2(cos(m_rotAng), sin(m_rotAng))*ACC_FORCE*deltaTime;
 	m_velocity += impulse / m_mass;
 	WarpPosition();
 }
 
 void Player::RotateLeft(float deltaTime) {
-	m_rotAng += deltaTime*ROT_FACTOR;
+	m_rotAng += deltaTime*ROT_FORCE;
 }
 
 void Player::RotateRight(float deltaTime) {
-	m_rotAng -= deltaTime*ROT_FACTOR;
+	m_rotAng -= deltaTime*ROT_FORCE;
 }
 
 void Player::StartThrust() {
 	isThrusting = true;
 }
 
-static int blink = false;
+int blink = 0;
+
 void Player::StopThrust() {
 	isThrusting = false;
 	blink = 0;
@@ -162,6 +137,10 @@ void Player::Render() {
 	if (isThrusting) DrawThrust();
 }
 
+void Player::Reset() {
+	*this = Player(m_parent);
+}
+
 Bullet * Player::Shot() {
 	charge = 0; //Reset Charge 
 	Bullet *newBullet = new Bullet(m_parent);
@@ -176,8 +155,4 @@ Bullet * Player::Shot() {
 
 	m_velocity -= impulse /m_mass; //Aply same force in opposite direction to ship
 	return newBullet;
-}
-
-void Player::Reset() {
-	*this = Player(m_parent);
 }

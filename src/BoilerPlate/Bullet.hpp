@@ -8,13 +8,20 @@ const float SHOT_FORCE = 10.0f;
 class Bullet : public SpaceObject {
 
 	friend class Player;
-	int m_lifeTime;
+
 public:
+	/*CONSTRUCTOR*/
 	Bullet(Game *);
-	bool IsLifeTimeEnded();
+
+	/*PUBLIC FUNCTIONS*/
+	bool IsLifeTimeOver();
 
 	void Update(float);
 	void Render() override;
+
+private:
+	/*PRIVATE MEMBERS*/
+	int m_lifeTime;
 };
 
-#endif "BULLET_HPP_"
+#endif // ! BULLET_HPP_

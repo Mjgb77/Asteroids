@@ -7,6 +7,7 @@
 
 const int MAX_LIFE_TIME = 30;
 
+/*CONSTRUCTOR*/
 Bullet::Bullet(Game* parent)
 	: SpaceObject(parent) {
 	m_lifeTime = 0;
@@ -14,7 +15,8 @@ Bullet::Bullet(Game* parent)
 	m_radius = 3.0f;
 }
 
-bool Bullet::IsLifeTimeEnded() {
+/*PUBLIC FUNCTIONS*/
+bool Bullet::IsLifeTimeOver() {
 	return m_lifeTime > MAX_LIFE_TIME;
 }
 
