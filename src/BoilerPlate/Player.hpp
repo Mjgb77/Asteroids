@@ -7,7 +7,7 @@
 const int MAX_NUMBER_OF_BULLETS = 4;
 
 class Player : public SpaceObject {
-
+	friend class Saucer;
 public:
 	/*CONSTRUCTOR*/
 	Player(Game *);

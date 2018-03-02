@@ -11,6 +11,7 @@
 
 class Game
 {
+	friend class Saucer;
 public:
 	/*CONSTRUCTOR/DESTRUCTOR*/
 	Game(int, int);

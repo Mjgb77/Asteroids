@@ -8,6 +8,7 @@ using namespace std;
 SoundPlayer::SoundPlayer()
 {
 	m_engine = irrklang::createIrrKlangDevice();
+	system("cls");
 }
 
 SoundPlayer::~SoundPlayer() {

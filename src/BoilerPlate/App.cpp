@@ -76,16 +76,17 @@ namespace Engine
 
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		m_game = new Game(m_width, m_height);
 
 		// Setup the viewport
 		//
 		SetupViewport();
 
+
 		// Change game state
 		//
 		m_state = GameState::INIT_SUCCESSFUL;
 
-		m_game = new Game(m_width, m_height);
 
 		return true;
 	}
@@ -224,20 +225,6 @@ namespace Engine
 			SDL_Log("TTF_Init: %s\n", TTF_GetError());
 			return false;
 		}
-
-		SDL_version compile_version;
-		const SDL_version *link_version = TTF_Linked_Version();
-		SDL_TTF_VERSION(&compile_version);
-
-		SDL_Log("compiled with SDL_ttf version: %d.%d.%d\n",
-			compile_version.major,
-			compile_version.minor,
-			compile_version.patch);
-
-		SDL_Log("running with SDL_ttf version: %d.%d.%d\n",
-			link_version->major,
-			link_version->minor,
-			link_version->patch);
 
 		return true;
 	}

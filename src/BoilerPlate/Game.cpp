@@ -12,13 +12,13 @@
 
 const int INITIAL_WAVE = 4;
 const int GEN_SAUCER_TIME = 1000;
-const int EXTRA_LIFE = (1 << 14);
+const int EXTRA_LIFE = (1 << 10);
 
 /*CONSTRUCTOR/DESTRUCTOR*/
 
 class SpaceObject;
 
-Game::Game(int width, int height) : m_width(width), m_height(height), m_gameFont("../../fonts/font.ttf", 100) {
+Game::Game(int width, int height) : m_width(width), m_height(height), m_gameFont("fonts/font.ttf", 100) {
 	m_maxX = 0.5f*m_width;
 	m_minX = -m_maxX;
 	
@@ -107,7 +107,7 @@ void Game::Update(float deltaTime)
 	for (auto bullet : m_saucerBullets) bullet->Update(deltaTime);
 	for (auto asteroid : m_asteroids) asteroid->Update(deltaTime);
 
-	if (CheckCollisionWithSaucerBullets(m_player)) m_player->Explode();
+	if (CheckCollisionWithSaucer(m_player) || CheckCollisionWithSaucerBullets(m_player)) m_player->Explode();
 	CheckCollisionOfAsteroids();
 	CleanDeadBullets();
 
@@ -115,7 +115,10 @@ void Game::Update(float deltaTime)
 
 
 	//Check for extra live
-	if (lastScore / EXTRA_LIFE != m_player->GetScore() / EXTRA_LIFE) m_player->IncreaseLife();
+	if (lastScore / EXTRA_LIFE != m_player->GetScore() / EXTRA_LIFE) {
+		m_soundPlayer->PlaySound(m_extraShipSound);
+		m_player->IncreaseLife();
+	}
 }
 
 
@@ -131,7 +134,7 @@ void Game::Render()
 	DrawingTool::RenderText(GetScoreString(), m_gameFont, Palette::Cyan, m_minX + 50.0f, m_maxY - 100.0f);
 
 	m_player->Render();
-
+	
 	for (auto bullet : m_bullets) bullet->Render();
 	for (auto bullet : m_saucerBullets) bullet->Render();
 	for (auto asteroid : m_asteroids) asteroid->Render();
@@ -142,16 +145,16 @@ void Game::Render()
 /*PRIVATE FUNCTIONS*/
 
 void Game::InitializeSound() {
-	m_bangSmallSound = new Sound("../../sounds/bangSmall.wav");
-	m_bangMediumSound = new Sound("../../sounds/bangMedium.wav");
-	m_bangLargeSound = new Sound("../../sounds/bangLarge.wav");
+	m_bangSmallSound = new Sound("sounds/bangSmall.wav");
+	m_bangMediumSound = new Sound("sounds/bangMedium.wav");
+	m_bangLargeSound = new Sound("sounds/bangLarge.wav");
 
-	m_extraShipSound = new Sound("../../sounds/extraShip.wav");
-	m_fireSound = new Sound("../../sounds/fire.wav", 0.3f);
-	m_thrusterSound = new Sound("../../sounds/thrust.wav");
+	m_extraShipSound = new Sound("sounds/extraShip.wav");
+	m_fireSound = new Sound("sounds/fire.wav", 0.3f);
+	m_thrusterSound = new Sound("sounds/thrust.wav");
 
-	m_saucerSmallSound = new Sound("../../sounds/saucerSmall.wav");
-	m_saucerBigSound = new Sound("../../sounds/saucerBig.wav");
+	m_saucerSmallSound = new Sound("sounds/saucerSmall.wav");
+	m_saucerBigSound = new Sound("sounds/saucerBig.wav");
 
 	m_soundPlayer = new SoundPlayer();
 
@@ -169,7 +172,7 @@ void Game::InitializeSound() {
 
 void Game::CreateAsteroids(int count) {
 	while (count--)
-		m_asteroids.push_back(new Asteroid(BIG, this));
+		m_asteroids.push_back(new Asteroid(AsteroidSize::BIG, this));
 }
 
 bool Game::CheckCollisionWithBullets(Asteroid *tAsteroid) {
@@ -183,7 +186,7 @@ bool Game::CheckCollisionWithBullets(Asteroid *tAsteroid) {
 		}
 		else bullet++;
 	}
-	if (returnValue) m_player->IncreaseScore(tAsteroid->getSize() == SMALL ? 100 : (tAsteroid->getSize() == MEDIUM ? 50 : 20));
+	if (returnValue) m_player->IncreaseScore(tAsteroid->getSize() == AsteroidSize::SMALL ? 100 : (tAsteroid->getSize() == AsteroidSize::MEDIUM ? 50 : 20));
 	return returnValue;
 }
 
@@ -224,10 +227,10 @@ bool Game::CheckCollisionWithPlayer(Asteroid *tAsteroid) {
 	return false;
 }
 
-bool Game::CheckCollisionWithSaucer(SpaceObject *tAsteroid) {
+bool Game::CheckCollisionWithSaucer(SpaceObject *tObject) {
 	if (!m_saucer) return false;
 	
-	if (tAsteroid->HasCollisionWith(m_saucer)) {
+	if (tObject->HasCollisionWith(m_saucer)) {
 		m_saucer->Kill();
 		return true;
 	}
@@ -240,9 +243,9 @@ void Game::CheckCollisionOfAsteroids() {
 	for (auto asteroid = m_asteroids.begin(); asteroid != m_asteroids.end(); ) {
 
 		if (CheckCollisionWithBullets(*asteroid) || CheckCollisionWithPlayer(*asteroid) || CheckCollisionWithSaucer(*asteroid) || CheckCollisionWithSaucerBullets(*asteroid)) {
-			if ((*asteroid)->getSize() != SMALL) {
+			if ((*asteroid)->getSize() != AsteroidSize::SMALL) {
 				
-				if ((*asteroid)->getSize() == BIG) m_soundPlayer->PlaySound(m_bangLargeSound);
+				if ((*asteroid)->getSize() == AsteroidSize::BIG) m_soundPlayer->PlaySound(m_bangLargeSound);
 				else m_soundPlayer->PlaySound(m_bangMediumSound);
 
 				asteroidsToAdd.push_back((*asteroid)->getAsteroidOfLessSize());
@@ -408,7 +411,7 @@ void Game::RenderDebug() {
 		std::vector<Vector2> referenceLine;
 		referenceLine.push_back({ 0.0f, DESIRED_FRAME_TIME * yScale });
 		referenceLine.push_back({ plotLength * xScale, DESIRED_FRAME_TIME * yScale });
-		DrawingTool::DrawLineStrip(plotPoints, { xStart,yStart }, Palette::Cyan, 1.0f);
+		DrawingTool::DrawLineStrip(referenceLine, { xStart,yStart }, Palette::Green, 2.0f);
 
 	}
 }

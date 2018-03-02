@@ -4,7 +4,12 @@
 #include "SpaceObject.hpp"
 #include "Bullet.hpp"
 
-//enum SaucerSize { SMALL, BIG };
+//struct SaucerSize {
+//	enum Size { SMALL, BIG };
+//	int getScore() {
+//
+//	}
+//};
 
 class Saucer : public SpaceObject
 {

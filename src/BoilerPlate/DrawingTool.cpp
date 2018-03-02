@@ -35,7 +35,7 @@ void DrawingTool::DrawCircle(Vector2 position, float radius, Color lineColor, fl
 	glBegin(GL_LINE_LOOP);
 
 	for (float ang = 0; ang < PI2; ang += delta)
-		glVertex2f(radius*cos(ang), sin(ang));
+		glVertex2f(radius*cos(ang), radius*sin(ang));
 
 	glEnd();
 }
@@ -43,7 +43,7 @@ void DrawingTool::DrawCircle(Vector2 position, float radius, Color lineColor, fl
 
 void DrawingTool::DrawLineStrip(std::vector<Vector2> points, Vector2 position, Color lineColor, float lineWidth)
 {
-	SetUp(position, lineColor, lineWidth);
+	SetUp(position, lineColor);
 	glLineWidth(lineWidth);
 
 	glBegin(GL_LINE_STRIP);
@@ -79,6 +79,15 @@ void DrawingTool::DrawPolygon(std::vector<Vector2> points, Vector2 position, Col
 	glEnd();
 }
 
+void DrawingTool::DrawSegment(Vector2 A, Vector2 B, Color lineColor, float lineWidth) {
+	SetUp(Vector2::Origin, lineColor);
+	glLineWidth(lineWidth);
+	glBegin(GL_LINE_STRIP);
+		glVertex2f(A.x, A.y);
+		glVertex2f(B.x, B.y);
+	glEnd();
+}
+
 unsigned int power_two_floor(unsigned int val) {
 	unsigned int power = 2, nextVal = power * 2;
 	while ((nextVal *= 2) <= val)
@@ -93,10 +102,10 @@ void DrawingTool::RenderText(std::string message, Font font, Color color, float 
 	glTranslatef(x, y, 0.f);
 
 	SDL_Color sdlColor;
-	sdlColor.a = 255 * color.alpha;
-	sdlColor.r = 255 * color.red;
-	sdlColor.g = 255 * color.green;
-	sdlColor.b = 255 * color.blue;
+	sdlColor.a = static_cast<Uint8> (255 * color.alpha);
+	sdlColor.r = static_cast<Uint8> (255 * color.red);
+	sdlColor.g = static_cast<Uint8> (255 * color.green);
+	sdlColor.b = static_cast<Uint8> (255 * color.blue);
 	
 	SDL_Surface *surface;
 

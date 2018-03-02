@@ -9,7 +9,7 @@ struct Font
 {
 public:
 	/*CONSTRUCTOR*/
-	Font(std::string filePath, int size);
+	Font(char * filePath, int size);
 
 	TTF_Font* m_font;
 private:

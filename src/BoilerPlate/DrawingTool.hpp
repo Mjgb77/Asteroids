@@ -17,10 +17,12 @@ public:
 	static void DrawCircle(Vector2 position, float radius, Color lineColor, float lineWidth);
 	
 	static void DrawLineLoop(std::vector<Vector2> points, Vector2 position, Color lineColor, float lineWidth, float rotAng, float scale = 1.0f);
-	
+
 	static void DrawLineStrip(std::vector<Vector2> points, Vector2 position, Color lineColor, float lineWidth);
 	
 	static void DrawPolygon(std::vector<Vector2> points, Vector2 position, Color innerColor,  float rotAng, float scale = 1.0f);
+	
+	static void DrawSegment(Vector2 A, Vector2 B, Color lineColor, float lineWidth);
 
 	static void RenderText(std::string message, Font font, Color color, float x, float y);
 };

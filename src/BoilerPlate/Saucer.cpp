@@ -15,7 +15,7 @@ const float OFFSET_ANG = 0.5f*MathUtilities::PI; //Starting direction of the shi
 const float SAUCER_SPEED = 100.0f;
 const float BORDER_WIDTH = 2.0f;
 const int CHARGE_TIME = 60; //Units of time until Saucer is ready to fire
-
+const int ROTATION_TIME = 120;
 /**/
 
 class Game;
@@ -32,7 +32,7 @@ Saucer::Saucer(Game * parent)
 	m_horizontalDirection = MathUtilities::RandInt(2);
 	float yPos = (parent->m_height)* (MathUtilities::RandFloat()) + parent->m_minY;
 	m_radius = 15.0f;
-
+	m_charge = 0;
 	m_isAlive = true;
 
 	m_position = Vector2(parent->m_maxX,yPos);
@@ -66,6 +66,7 @@ void Saucer::Update(float deltaTime) {
 void Saucer::Render() {
 
 	DrawingTool::DrawLineLoop(saucerPoints, m_position, Palette::White, BORDER_WIDTH, 0.0f);
+	DrawingTool::DrawLineStrip({ {-20.0f,0.0f},{20.0f,0.0f} }, m_position, Palette::White, BORDER_WIDTH);
 }
 
 
@@ -79,7 +80,9 @@ Bullet * Saucer::Shot() {
 	newBullet->m_position = m_position;
 	newBullet->m_rotAng = MathUtilities::RandFloat() * MathUtilities::PI * 2.0f;
 
-	Vector2 impulse = Vector2(cos(newBullet->m_rotAng), sin(newBullet->m_rotAng)) * SHOT_FORCE;
+	Vector2 directionToPlayer = m_parent->m_player->m_position - m_position;
+	directionToPlayer.Normalize();
+	Vector2 impulse = directionToPlayer * SHOT_FORCE;
 
 	//Apply force to Bullet
 	newBullet->m_velocity = impulse / newBullet->m_mass;

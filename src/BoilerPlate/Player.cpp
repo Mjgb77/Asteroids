@@ -154,7 +154,7 @@ void Player::Render() {
 
 	/*Rendering lifes*/
 	float xStart = m_parent->m_minX + 50.0f;
-	float yStart = m_parent->m_maxY - 70.0f;
+	float yStart = m_parent->m_maxY -120.0f;
 	for (int idShip = 0; idShip < m_lifes; idShip++, xStart += 30.0f) DrawShip({ xStart, yStart }, MathUtilities::PI * 0.5f, 0.5f);
 
 	if (currentRecovery > 0 && currentRecovery < RECOVERY_TIME && (currentRecovery / 16) % 2 == 0) return;
