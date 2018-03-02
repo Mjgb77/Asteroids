@@ -13,12 +13,21 @@ public:
 	Player(Game *);
 
 	/*PUBLIC FUNCTIONS*/
+	int GetLifes();
+	int GetScore();
+
+	void IncreaseScore(int);
+	void IncreaseLife();
 
 	void MoveForward (float);
 	void RotateLeft(float);
 	void RotateRight(float);
 	
-	void StartThrust ();
+	void DrawShip(Vector2, float, float);
+	void DrawExplossion();
+	void DrawThrust();
+
+	void StartThrust();
 	void StopThrust ();
 
 	bool IsReadyToShot();
@@ -27,6 +36,7 @@ public:
 	void Render() override;
 
 	void Reset();
+	void Explode();
 
 	Bullet * Shot();
 
@@ -34,6 +44,9 @@ private:
 	/*PRIVATE MEMBERS*/
 	bool isThrusting;
 	int charge;
+	int currentRecovery;
+	int m_lifes;
+	int m_score;
 };
 
 #endif // !PLAYER_HPP_

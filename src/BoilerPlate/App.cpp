@@ -7,8 +7,9 @@
 
 // OpenGL includes
 #include <GL/glew.h>
-#include <SDL2/SDL_opengl.h>
-
+#include <SDL.h>
+#include <SDL_opengl.h>
+#include <SDL_ttf.h>
 
 namespace Engine
 {
@@ -25,13 +26,13 @@ namespace Engine
 	{
 		m_state = GameState::UNINITIALIZED;
 		m_lastFrameTime = m_timer->GetElapsedTimeInSeconds();
-		m_game = new Game(width, height);
 	}
 
 	App::~App()
 	{
-		CleanupSDL();
 		if (m_game) delete m_game;
+		CleanupSDL();
+		CleanupTTF();
 	}
 
 	void App::Execute()
@@ -66,12 +67,15 @@ namespace Engine
 	{
 		// Init the external dependencies
 		//
-		bool success = SDLInit() && GlewInit();
+		bool success = SDLInit() && GlewInit() && TTFInit();
 		if (!success)
 		{
 			m_state = GameState::INIT_FAILED;
 			return false;
 		}
+
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		// Setup the viewport
 		//
@@ -80,6 +84,8 @@ namespace Engine
 		// Change game state
 		//
 		m_state = GameState::INIT_SUCCESSFUL;
+
+		m_game = new Game(m_width, m_height);
 
 		return true;
 	}
@@ -117,7 +123,7 @@ namespace Engine
 
 		double elapsedTime = endTime - startTime;
 
-		m_game->Update(elapsedTime);
+		m_game->Update(static_cast<float>(elapsedTime));
 
 		m_lastFrameTime = m_timer->GetElapsedTimeInSeconds();
 		m_nUpdates++;
@@ -127,7 +133,7 @@ namespace Engine
 	void App::Render()
 	{
 		Palette::SetBackground(Palette::DarkNight);
-		
+
 		m_game->Render();
 		
 		SDL_GL_SwapWindow(m_mainWindow);
@@ -212,6 +218,30 @@ namespace Engine
 		return true;
 	}
 
+	bool App::TTFInit() {
+		
+		if (TTF_Init() == -1) {
+			SDL_Log("TTF_Init: %s\n", TTF_GetError());
+			return false;
+		}
+
+		SDL_version compile_version;
+		const SDL_version *link_version = TTF_Linked_Version();
+		SDL_TTF_VERSION(&compile_version);
+
+		SDL_Log("compiled with SDL_ttf version: %d.%d.%d\n",
+			compile_version.major,
+			compile_version.minor,
+			compile_version.patch);
+
+		SDL_Log("running with SDL_ttf version: %d.%d.%d\n",
+			link_version->major,
+			link_version->minor,
+			link_version->patch);
+
+		return true;
+	}
+
 	void App::CleanupSDL()
 	{
 		// Cleanup
@@ -220,6 +250,11 @@ namespace Engine
 		SDL_DestroyWindow(m_mainWindow);
 
 		SDL_Quit();
+	}
+
+	void App::CleanupTTF()
+	{
+		TTF_Quit();
 	}
 
 	void App::OnResize(int width, int height)

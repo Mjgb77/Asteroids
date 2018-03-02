@@ -3,18 +3,17 @@
 #include "MathUtilities.hpp"
 #include "Vector2.hpp"
 
-#include <GL/glew.h>
-#include <SDL2/SDL_opengl.h>
-
 #include <vector>
 #include <cmath>
 
 #include "Game.hpp"
+#include "Palette.hpp"
+#include "DrawingTool.hpp"
 
 class Game;
 
-
 const float MAX_SPEED = 400.0f;
+const float BORDER_WIDTH = 2.0f;
 
 std::vector <Vector2> asteroidPoints;
 
@@ -50,18 +49,7 @@ AsteroidSize Asteroid::getSize() {
 
 void Asteroid::Render() {
 
-	glLoadIdentity();
-	glTranslatef(m_position.x, m_position.y, 0.0f);
-	glRotatef(MathUtilities::ToDeg(m_rotAng), 0.0f, 0.0f, 1.0f);
-
-	glColor3f(1.0f, 1.0f, 1.0f);
-	glLineWidth(2.0f);
-	glBegin(GL_LINE_LOOP);
-	for (Vector2 P : asteroidPoints) {
-		P = P * (2.0f*static_cast<float> (m_asteroidSize) + 1.0f);
-		glVertex2f(P.x, P.y);
-	}
-	glEnd();
+	DrawingTool::DrawLineLoop(asteroidPoints, m_position, Palette::White, BORDER_WIDTH, MathUtilities::ToDeg(m_rotAng), GetSizeFactor(m_asteroidSize) );
 
 }
 

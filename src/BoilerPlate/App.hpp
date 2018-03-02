@@ -47,8 +47,10 @@ namespace Engine
 		 * ============================================================= */
 		bool SDLInit						( );
 		bool GlewInit						( );
+		bool TTFInit						( );
 		void SetupViewport					( );
 		void CleanupSDL						( );
+		void CleanupTTF						( );
 		void OnResize						( int width, int height ) override;
 		void OnExit							( ) override;
 		void OnKeyDown						( SDL_KeyboardEvent keyBoardEvent ) override;

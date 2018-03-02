@@ -45,7 +45,7 @@ public:
 
 	template <typename T>
 	static T Interpolate(T startValue, T endValue, float fraction) {
-		return startValue + (endValue - startValue)*fraction;
+		return startValue + static_cast<T>((endValue - startValue)*fraction);
 	}
 };
 

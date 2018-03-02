@@ -8,17 +8,17 @@ const float MathUtilities::PI = acosf(-1);
 void RandSeed() {
 	static bool seeded = false;
 	if (!seeded) {
-		srand(time(NULL));
+		srand(static_cast<unsigned int>(time(NULL)));
 		seeded = true;
 	}
 }
 
 int MathUtilities::NearestInt(float x) {
-	return round(x);
+	return static_cast<int>(round(x));
 }
 
 int MathUtilities::NearestEven(float x) {
-	int xLow = floor(x), xUp = ceil(x);
+	int xLow = static_cast<int>(floor(x)), xUp = static_cast<int>(ceil(x));
 	if (xLow == xUp) return xUp + 1;
 	return xLow & 1 ? xUp : xLow;
 }
