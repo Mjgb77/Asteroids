@@ -12,7 +12,7 @@ public:
 	static int NearestEven (float x); //Return the nearest even integer, if there is a tie return the greatest
 
 	static int RandInt (int);
-	static float RandFloat();
+	static float RandFloat(); //Return a random float from 0.0 to 1.0
 
 	static float ToDeg (float rad);
 	static float ToRad (float deg);
@@ -45,7 +45,7 @@ public:
 
 	template <typename T>
 	static T Interpolate(T startValue, T endValue, float fraction) {
-		return startValue + (endValue - startValue)*fraction;
+		return startValue + static_cast<T>((endValue - startValue)*fraction);
 	}
 };
 

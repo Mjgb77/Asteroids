@@ -9,8 +9,7 @@
 // Asteroids
 #include "SDLEvent.hpp"
 #include "TimeManager.hpp"
-#include "Player.hpp"
-#include "Asteroid.hpp"
+#include "Game.hpp"
 
 namespace Engine
 {
@@ -48,8 +47,10 @@ namespace Engine
 		 * ============================================================= */
 		bool SDLInit						( );
 		bool GlewInit						( );
+		bool TTFInit						( );
 		void SetupViewport					( );
 		void CleanupSDL						( );
+		void CleanupTTF						( );
 		void OnResize						( int width, int height ) override;
 		void OnExit							( ) override;
 		void OnKeyDown						( SDL_KeyboardEvent keyBoardEvent ) override;
@@ -68,8 +69,7 @@ namespace Engine
 		SDL_GLContext						m_context;
 		GameState::State					m_state;
 		Engine::TimeManager*				m_timer;
-		Player*								m_player;
-		Asteroid*							m_asteroid;
+		Game*								m_game;
 	};
 }
 #endif /* GAME_HPP */

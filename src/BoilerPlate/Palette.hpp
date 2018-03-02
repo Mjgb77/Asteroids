@@ -9,10 +9,12 @@ public:
 	Palette();
 	
 	static const Color Amber;
-	static const Color Black;
 	static const Color Cyan;
 	static const Color DarkNight;
+	static const Color Flame;
+	static const Color Green;
 	static const Color Red;
+	static const Color White;
 
 	static void SetBackground(Color color);
 };

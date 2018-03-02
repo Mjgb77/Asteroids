@@ -15,6 +15,15 @@
     <ClCompile Include="Asteroid.cpp" />
     <ClCompile Include="SpaceObject.cpp" />
     <ClCompile Include="Palette.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="TextManager.cpp" />
+    <ClCompile Include="DrawingTool.cpp" />
+    <ClCompile Include="Font.cpp" />
+    <ClCompile Include="SoundPlayer.cpp" />
+    <ClCompile Include="Sound.cpp" />
+    <ClCompile Include="Saucer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.hpp" />
@@ -29,6 +38,16 @@
     <ClInclude Include="Color.hpp" />
     <ClInclude Include="MathUtilities.hpp" />
     <ClInclude Include="Palette.hpp" />
+    <ClInclude Include="Game.hpp" />
+    <ClInclude Include="Bullet.hpp" />
+    <ClInclude Include="InputManager.hpp" />
+    <ClInclude Include="TextManager.hpp" />
+    <ClInclude Include="DrawingTool.hpp" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="Font.hpp" />
+    <ClInclude Include="SoundPlayer.hpp" />
+    <ClInclude Include="Sound.hpp" />
+    <ClInclude Include="Saucer.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -40,5 +59,14 @@
     <Filter Include="Engine\Header files">
       <UniqueIdentifier>{da8cc683-e66e-46b9-be58-7d0e16e23f76}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="AsteroidPoints.txt" />
+    <Text Include="ShipPoints.txt" />
+    <Text Include="ThrusterPoints.txt" />
+    <Text Include="SaucerPoints.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="BoilerPlate.rc" />
   </ItemGroup>
 </Project>

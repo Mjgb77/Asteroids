@@ -1,22 +1,28 @@
 #ifndef ASTEROID_HPP_
 #define ASTEROID_HPP_
 
-#include "Vector2.hpp"
 #include "SpaceObject.hpp"
 
-enum AsteroidSize {SMALL, MEDIUM, BIG };
+
+enum AsteroidSize { SMALL, MEDIUM, BIG };
 
 class Asteroid : public SpaceObject {
-	
-	AsteroidSize m_asteroidSize;
 
 public:
-	Asteroid (AsteroidSize, int, int);
+	/*CONSTRUCTOR*/
+	Asteroid(AsteroidSize, Game *);
+
+	/*PUBLIC FUNCTIONS*/
 
 	AsteroidSize getSize();
-	void Update() override;
+
+	Asteroid* getAsteroidOfLessSize();
+	
 	void Render() override;
 
+private:
+	/*PRIVATE MEMBERS*/
+	AsteroidSize m_asteroidSize;
 };
 
 #endif // ! ASTEROID_HPP_ 
