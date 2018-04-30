@@ -3,7 +3,6 @@
 
 #include "SpaceObject.hpp"
 
-const float SHOT_FORCE = 10.0f;
 
 class Bullet : public SpaceObject {
 

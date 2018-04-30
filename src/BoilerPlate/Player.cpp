@@ -17,6 +17,8 @@ const float ACC_FORCE = 700.0f;
 const float ROT_FORCE = 7.0f;
 /**/
 
+const float SHOT_FORCE = 10.0f;
+
 const float OFFSET_ANG = 0.5f*MathUtilities::PI; //Starting direction of the ship
 
 const float MAX_SPEED = 1000.0f;
@@ -35,7 +37,7 @@ Player::Player(Game * parent)
 	: SpaceObject(parent), isThrusting(false)
 {
 	charge = CHARGE_TIME;
-	currentRecovery = RECOVERY_TIME;
+	currentRecovery = 0;
 	m_position = Vector2(Vector2::Origin);
 	m_rotAng = OFFSET_ANG;
 	m_lifes = 3;

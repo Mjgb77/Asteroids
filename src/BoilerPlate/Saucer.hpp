@@ -6,6 +6,7 @@
 
 //struct SaucerSize {
 //	enum Size { SMALL, BIG };
+//	Si
 //	int getScore() {
 //
 //	}

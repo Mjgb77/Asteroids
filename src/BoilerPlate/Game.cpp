@@ -12,7 +12,7 @@
 
 const int INITIAL_WAVE = 4;
 const int GEN_SAUCER_TIME = 1000;
-const int EXTRA_LIFE = (1 << 10);
+const int EXTRA_LIFE = (1 << 12);
 
 /*CONSTRUCTOR/DESTRUCTOR*/
 
@@ -70,7 +70,6 @@ void Game::Update(float deltaTime)
 		return;
 	}
 
-	int lastScore = m_player->GetScore();
 	/*CHECK DEBUG*/
 
 	if (InputManager::Instance().IsKeyPressed('d')) DEBUG_MODE ^= 1; //IF DEBUG KEY IS PRESSED TOOGLE DEBUG MODE
@@ -86,6 +85,7 @@ void Game::Update(float deltaTime)
 
 	/*UPDATE GAME MEMBERS*/
 
+	int lastScore = m_player->GetScore();
 
 	if (m_asteroids.empty()) CreateAsteroids(++m_currentAsteroidsW);
 
@@ -95,7 +95,7 @@ void Game::Update(float deltaTime)
 		if (CheckCollisionWithBullets(m_saucer)) m_saucer->Kill();
 	}
 	else {
-		if (++m_currentSaucerTime == GEN_SAUCER_TIME) {
+		if (++m_currentSaucerTime == GEN_SAUCER_TIME) { //If there is not saucer update until is ready to appear
 			m_currentSaucerTime = MathUtilities::RandInt(GEN_SAUCER_TIME);
 			m_saucer = new Saucer(this);
 		}
@@ -113,7 +113,6 @@ void Game::Update(float deltaTime)
 
 	if (m_saucer && !m_saucer->IsAlive()) m_saucer = nullptr;
 
-
 	//Check for extra live
 	if (lastScore / EXTRA_LIFE != m_player->GetScore() / EXTRA_LIFE) {
 		m_soundPlayer->PlaySound(m_extraShipSound);
@@ -125,7 +124,7 @@ void Game::Update(float deltaTime)
 void Game::Render()
 {
 	if (m_player->GetLifes() == 0) {
-		DrawingTool::RenderText("PRESIONA G", m_gameFont, Palette::Cyan, m_minX+150.0f, 0.0f);
+		DrawingTool::RenderText("PRESIONA G", m_gameFont, Palette::Cyan, -150.0f, 0.0f);
 		return;
 	}
 	
@@ -359,6 +358,11 @@ void Game::UpdateDebug(float deltaTime) {
 		bullet->m_circleColor = Palette::White;
 	}
 
+	for (auto bullet : m_saucerBullets) {
+		bullet->Update(deltaTime);
+		bullet->m_circleColor = Palette::White;
+	}
+
 	CleanDeadBullets();
 
 	/*COLOR COLLISIONS*/
@@ -367,6 +371,11 @@ void Game::UpdateDebug(float deltaTime) {
 		bool hasCollision = false;
 
 		for (auto bullet : m_bullets) {
+			if (asteroid->HasCollisionWith(bullet))
+				bullet->m_circleColor = Palette::Red, hasCollision = true;
+		}
+
+		for (auto bullet : m_saucerBullets) {
 			if (asteroid->HasCollisionWith(bullet))
 				bullet->m_circleColor = Palette::Red, hasCollision = true;
 		}
@@ -394,6 +403,7 @@ void Game::RenderDebug() {
 	}
 
 	for (auto bullet : m_bullets) bullet->DrawCircleAround();
+	for (auto bullet : m_saucerBullets) bullet->DrawCircleAround();
 
 	/*DRAWING PLOT*/
 	{
@@ -412,6 +422,5 @@ void Game::RenderDebug() {
 		referenceLine.push_back({ 0.0f, DESIRED_FRAME_TIME * yScale });
 		referenceLine.push_back({ plotLength * xScale, DESIRED_FRAME_TIME * yScale });
 		DrawingTool::DrawLineStrip(referenceLine, { xStart,yStart }, Palette::Green, 2.0f);
-
 	}
 }

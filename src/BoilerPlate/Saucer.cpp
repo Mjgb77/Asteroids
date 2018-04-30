@@ -18,6 +18,8 @@ const int CHARGE_TIME = 60; //Units of time until Saucer is ready to fire
 const int ROTATION_TIME = 120;
 /**/
 
+const float SHOT_FORCE = 5.0f;
+
 class Game;
 
 //inline float GetSizeFactor(SaucerSize size) {
@@ -56,10 +58,21 @@ bool Saucer::IsAlive()
 {
 	return m_isAlive;
 }
-
+int m_currentRotTime = 0;
 void Saucer::Update(float deltaTime) {
 
 	if (!IsReadyToShot()) m_charge++;
+	if (++m_currentRotTime == ROTATION_TIME) {
+		float maxAng = MathUtilities::PI / 4.0f;
+		float minAng = -maxAng;
+
+		m_rotAng = MathUtilities::Interpolate(minAng, maxAng, MathUtilities::RandFloat());
+		if (!m_horizontalDirection) m_rotAng += MathUtilities::PI;
+
+		Vector2 impulse = Vector2(cos(m_rotAng), sin(m_rotAng)) * SAUCER_SPEED;
+		m_velocity = impulse / m_mass;
+		m_currentRotTime = MathUtilities::RandInt(ROTATION_TIME);
+	}
 	SpaceObject::Update(deltaTime);
 }
 

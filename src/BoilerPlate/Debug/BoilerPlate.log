@@ -1,0 +1,35 @@
+﻿  Vector4.cpp
+  Vector3.cpp
+  Vector2.cpp
+  TimeManager.cpp
+  TextManager.cpp
+  SpaceObject.cpp
+  SoundPlayer.cpp
+  Sound.cpp
+  SDLEvent.cpp
+  Saucer.cpp
+  Player.cpp
+  MathUtilities.cpp
+  main.cpp
+  Palette.cpp
+  InputManager.cpp
+  Game.cpp
+  Font.cpp
+  DrawingTool.cpp
+  Color.cpp
+  Bullet.cpp
+  Generating Code...
+  Compiling...
+  Asteroid.cpp
+  App.cpp
+  Generating Code...
+  stb_image.c
+  BoilerPlate.vcxproj -> C:\Asteroids\src\Debug\BoilerPlate.exe
+          1 file(s) copied.
+          1 file(s) copied.
+          1 file(s) copied.
+          1 file(s) copied.
+          1 file(s) copied.
+          1 file(s) copied.
+          1 file(s) copied.
+          1 file(s) copied.

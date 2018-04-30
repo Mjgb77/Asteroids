@@ -52,8 +52,7 @@ private:
 	Player * m_player;
 	Saucer * m_saucer;
 	std::list <Asteroid*> m_asteroids;
-	std::list <Bullet*> m_bullets;
-	std::list <Bullet*> m_saucerBullets;
+	std::list <Bullet*> m_bullets, m_saucerBullets;
 
 	/*PRIVATE FUNCTIONS*/
 	void InitializeSound();
